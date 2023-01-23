@@ -1,0 +1,8 @@
+function onGenerateOptions() {
+    options["Gameplay Settings"].push(new ListOption(
+        "Mechanics",
+        "Adjust how difficult you want the game to be.",
+        "Hypno's Lullaby Port:Mechanics",
+        ["Normal", "Pussy", "Hell"]
+    ));
+}
