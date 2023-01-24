@@ -1,0 +1,9 @@
+<character sprite="hypno/Hypno Phase 2 Sheet" x="-300" y="-200" camX="200" camY="200" icon="hypno-two" flipX="false" >
+    <anims>
+        <anim name="idle" anim="Hypno2 Idle" indices="" fps="24" loop="true" x="0" y="0" />
+    </anims>
+
+    <scale x="1.3" y="1.3" />
+
+    <healthColor rgb="249, 223, 68" />
+</character>

@@ -1,0 +1,13 @@
+{
+    "scale": 0.44,
+    "animations": [
+        {
+            "animName": "normal",
+            "spritesheetAnim": "ABOMINATION HYPNO ICON instance 1",
+            "fps": 24,
+            "loop": true,
+            "offsets": {"x": 0, "y": 0}
+        }
+    ],
+    "positionOffset": {"x": 450, "y": 0}
+}

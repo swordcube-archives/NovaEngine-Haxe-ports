@@ -1,3 +1,5 @@
 <songs>
-    <song name="Left Unchecked" character="hypno2" bgColor="#9271FD" difficulties="hard"/>
+    <song name="Safety Lullaby" character="hypno" bgColor="#FFFFFF" difficulties="hard"/>
+    <song name="Left Unchecked" character="hypno-two" bgColor="#FFFFFF" difficulties="hard"/>
+    <song name="Lost Cause" character="abomination-hypno" bgColor="#FFFFFF" difficulties="hard"/>
 </songs>

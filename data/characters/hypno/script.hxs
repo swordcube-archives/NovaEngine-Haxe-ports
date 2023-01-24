@@ -1,0 +1,27 @@
+function onCreate() {
+    character.loadXML();
+
+    character.animation.addByPrefix('idle', 'Hypno Idle 1', 24, false);
+    character.animation.addByPrefix('singUP', 'Hypno Up', 24, false);
+    character.animation.addByPrefix('singRIGHT', 'Hypno Right', 24, false);
+    character.animation.addByPrefix('singDOWN', 'Final Hypno Down', 24, false);
+    character.animation.addByPrefix('singLEFT', 'Hypno Left', 24, false);
+    character.animation.addByPrefix('psyshock', 'Psyshock Full', 24, false);
+    character.animation.addByIndices('psyshock particle', "Full Psyshock Particle", [0, 1, 2, 3, 4, 5, 6], "", 24, false);
+
+    addOffset('idle');
+    addOffset('singLEFT', 144, 22);
+    addOffset('singRIGHT', -338, 93);
+    addOffset('singDOWN', -150, -120);
+    addOffset('singUP', -89, 267);
+    addOffset('psyshock', -312, 22);
+    addOffset('psyshock particle', -940, 190);
+
+    character.positionOffset.y -= (character.frameHeight * character.scale.y);
+}
+
+function addOffset(name:String, ?x:Float, ?y:Float) {
+    if(x == null) x = 0.0;
+    if(y == null) y = 0.0;
+    character.setOffset(name, x / character.scale.x, y / character.scale.y);
+}

@@ -1,0 +1,9 @@
+<character sprite="gf/Hypno Girlfriend" x="0" y="-100" camX="-50" camY="50" icon="gf" flipX="true" isPlayer="true" >
+    <anims>
+        <anim name="idle" anim="gf_idle_not_hypno_2s instance 1" indices="" fps="24" loop="false" x="-6" y="0" />
+    </anims>
+
+    <scale x="1" y="1" />
+
+    <healthColor rgb="165, 0, 77" />
+</character>
