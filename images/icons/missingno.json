@@ -1,0 +1,27 @@
+{
+    "animations": [
+        {
+            "animName": "normal",
+            "spritesheetAnim": "missingno icons",
+            "fps": 24,
+            "loop": true,
+            "offsets": {
+                "x": 0,
+                "y": 0
+            },
+            "indices": [0]
+        },
+        {
+            "animName": "losing",
+            "spritesheetAnim": "missingno icons",
+            "fps": 24,
+            "loop": true,
+            "offsets": {
+                "x": 0,
+                "y": 0
+            },
+            "indices": [1]
+        }
+    ],
+    "positionOffset": {"x": -40, "y": 0}
+}
