@@ -1,5 +1,5 @@
 {
-    "title": "Hypno's Lullaby V2 Port",
+    "name": "Hypno's Lullaby V2 Port",
     "description": "port",
 	"contributors": [
 		{
@@ -8,6 +8,5 @@
 		}
 	],
     "api_version": "0.1.0",
-    "mod_version": "1.0.0",
-    "license": "GPL 3.0"
+    "mod_version": "1.0.0"
 }

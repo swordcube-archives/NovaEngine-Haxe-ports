@@ -23,5 +23,5 @@ function onCreate() {
 function addOffset(name:String, ?x:Float, ?y:Float) {
     if(x == null) x = 0.0;
     if(y == null) y = 0.0;
-    character.setOffset(name, x / character.scale.x, y / character.scale.y);
+    character.addOffset(name, x / character.scale.x, y / character.scale.y);
 }

@@ -1,8 +1,8 @@
 function onGenerateOptions() {
-    options["Gameplay Settings"].push(new ListOption(
+    options["Gameplay"].push(new List(
         "Mechanics",
         "Adjust how difficult you want the game to be.",
-        "hypno-v2:Mechanics",
+        mod+":Mechanics",
         ["Normal", "Pussy", "Hell"]
     ));
 }

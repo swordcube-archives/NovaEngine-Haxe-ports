@@ -36,7 +36,7 @@ function onCreate() {
 
     var midground = new FlxSprite(consistentPosition[0], consistentPosition[1]);
     var name:String = 'MIDGROUND';
-    if (PlayState.SONG.name == 'Left Unchecked')
+    if (PlayState.SONG.song == 'Left Unchecked')
         name += ' BLOOD';
 
     midground.loadGraphic(stageImage(name));
@@ -71,9 +71,9 @@ function onCreate() {
 }
 
 function onCreatePost() {
-	UI.cpuStrums.visible = false;
+	cpuStrums.visible = false;
 
-	hypnoGuide = new FlxSprite(530, downscroll ? 170 : 370);
+	hypnoGuide = new FlxSprite(530, 370);
 	hypnoGuide.frames = Paths.getSparrowAtlas('hypno/Extras');
 	hypnoGuide.animation.addByPrefix('press', 'Spacebar', 24, false);
 	hypnoGuide.animation.play('press');
@@ -84,7 +84,7 @@ function onCreatePost() {
 }
 
 function onBeatHit(beat) {
-	if (hypnoGuide != null && PlayState.SONG.name == 'Safety Lullaby') {
+	if (hypnoGuide != null && PlayState.SONG.song == 'Safety Lullaby') {
         if (beat == 2) FlxTween.tween(hypnoGuide, {alpha: 1.0}, 0.5, {ease: FlxEase.cubeInOut});
         if (beat == 14) FlxTween.tween(hypnoGuide, {alpha: 0.0}, 0.5, {ease: FlxEase.cubeInOut});
         if (beat % 2 == 0) hypnoGuide.animation.play('press');

@@ -17,5 +17,5 @@ function onCreate() {
 }
 
 function addOffset(name:String, x:Float, y:Float) {
-    character.setOffset(name, x / character.scale.x, y / character.scale.y);
+    character.addOffset(name, x / character.scale.x, y / character.scale.y);
 }
