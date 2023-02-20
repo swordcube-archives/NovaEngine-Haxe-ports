@@ -54,7 +54,7 @@ function onCreate() {
     add(stageForeground, "fg");
 
 	brimstoneHand = new FlxSprite(760, 100);
-	brimstoneHand.frames = Paths.getSparrowAtlas('stages/alley/White_Hand');
+	brimstoneHand.frames = Paths.getSparrowAtlas('game/stages/alley/White_Hand');
 	brimstoneHand.animation.addByPrefix('idle', 'White Hand FInished', 24, false);
 	brimstoneHand.animation.play('idle');
 	brimstoneHand.updateHitbox();
