@@ -1,0 +1,59 @@
+import flixel.ui.FlxButton;
+import Sys;
+import sys.io.File;
+import sys.FileSystem;
+
+var templateScript:String = "function onCreate() {
+    character.loadPsych();
+}";
+
+function onCreate() {
+    var options:Array<String> = [
+        ["Char Converter", () -> {
+            trace("\n--== CONVERTING ALL CHARACTERS IN THE \"psych_characters\" FOLDER!\n\n--== THIS WILL TAKE A MOMENT! ==--\n");
+            var initialTime:Float = Sys.cpuTime();
+
+            // START OF CONVERT LOGIC
+
+            for(item in Paths.getFolderContents("data/psych_characters")) {
+                var fromPath = Paths.getPath("data")+"/psych_characters/"+item;
+                var folderPath = Paths.getPath("data")+"/characters/"+item.split(".json")[0];
+                var toPath = folderPath+"/config.json";
+                var toPathScript = folderPath+"/script.hxs";
+
+                if(!FileSystem.exists(folderPath))
+                    FileSystem.createDirectory(folderPath);
+
+                File.saveContent(toPath, File.getContent(fromPath));
+                File.saveContent(toPathScript, templateScript);
+
+                Sys.println(item+" CONVERTED!");
+            }
+
+            // END OF CONVERT LOGIC
+
+            var finalTime:Float = Sys.cpuTime() - initialTime;
+            Sys.println("--== DONE! ==--");
+            Sys.println("--== TOOK "+FlxMath.roundDecimal(finalTime, 2)+" MS ==--");
+        }],
+        ["Stage Helper"]
+    ];
+
+    FlxG.camera.zoom = 2;
+
+    for(i in 0...options.length) {
+        var option:Array<Dynamic> = options[i];
+        trace(i, option);
+
+        var button = new FlxButton(0, 0, option[0], (option[1] != null) ? option[1] : () -> trace("sorry nothing"));
+        button.screenCenter();
+        button.y += (i * 30);
+        button.y -= (options.length * 30) * 0.5;
+        add(button);
+    }
+}
+
+function onUpdate(elapsed) {
+    if(controls.BACK)
+        FlxG.switchState(new states.menus.MainMenuState());
+}

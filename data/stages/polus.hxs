@@ -1,0 +1,68 @@
+function onCreate() {
+    stage.dadPos.set(0, -150);
+    stage.gfPos.set(300, -120);
+    stage.bfPos.set(870, -150);
+
+    defaultCamZoom = 0.75;
+
+    var sky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(stageImage('polus_custom_sky'));
+    sky.antialiasing = SettingsAPI.antialiasing;
+    sky.scrollFactor.set(0.5, 0.5);
+    sky.setGraphicSize(Std.int(sky.width * 1.4));
+    sky.active = false;
+    add(sky);
+
+    var rocks:FlxSprite = new FlxSprite(-700, -300).loadGraphic(stageImage('polusrocks'));
+    rocks.updateHitbox();
+    rocks.antialiasing = SettingsAPI.antialiasing;
+    rocks.scrollFactor.set(0.6, 0.6);
+    rocks.active = false;
+    add(rocks);
+
+    var hills:FlxSprite = new FlxSprite(-1050, -180.55).loadGraphic(stageImage('polusHills'));
+    hills.updateHitbox();
+    hills.antialiasing = SettingsAPI.antialiasing;
+    hills.scrollFactor.set(0.9, 0.9);
+    hills.active = false;
+    add(hills);
+
+    var warehouse:FlxSprite = new FlxSprite(50, -400).loadGraphic(stageImage('polus_custom_lab'));
+    warehouse.updateHitbox();
+    warehouse.antialiasing = SettingsAPI.antialiasing;
+    warehouse.scrollFactor.set(1, 1);
+    warehouse.active = false;
+    add(warehouse);
+
+    var ground:FlxSprite = new FlxSprite(-1350, 80).loadGraphic(stageImage('polus_custom_floor'));
+    ground.updateHitbox();
+    ground.antialiasing = SettingsAPI.antialiasing;
+    ground.scrollFactor.set(1, 1);
+    ground.active = false;
+    add(ground);
+
+    speaker = new FlxSprite(300, 185);
+    speaker.frames = Paths.getSparrowAtlas('game/stages/polus/speakerlonely');
+    speaker.animation.addByPrefix('bop', 'speakers lonely', 24, false);
+    speaker.animation.play('bop');
+    speaker.setGraphicSize(Std.int(speaker.width * 1));
+    speaker.antialiasing = false;
+    speaker.scrollFactor.set(1, 1);
+    speaker.active = true;
+    speaker.antialiasing = SettingsAPI.antialiasing;
+    if (PlayState.SONG.name.toLowerCase() == 'sabotage')
+    {
+        add(speaker);
+    }
+    if (PlayState.SONG.name.toLowerCase() == 'meltdown')
+    {
+        GameOverSubstate.characterName = 'bfg-dead';
+        var bfdead:FlxSprite = new FlxSprite(600, 525).loadGraphic(stageImage('bfdead'));
+        bfdead.setGraphicSize(Std.int(bfdead.width * 0.8));
+        bfdead.updateHitbox();
+        bfdead.antialiasing = SettingsAPI.antialiasing;
+        bfdead.scrollFactor.set(1, 1);
+        bfdead.active = false;
+        add(speaker);
+        add(bfdead);
+    }
+}

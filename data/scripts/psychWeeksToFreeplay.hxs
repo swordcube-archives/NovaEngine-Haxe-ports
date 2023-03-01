@@ -1,0 +1,31 @@
+// this is one of the few scripts made with haxe instead of lua
+// why? i coded this script at like 3am lmao
+
+// haxe is easier for my brain at 3am
+
+import sys.io.File;
+
+function onCreate() {
+    trace("\n\n\n\n\n\n\n\n\n");
+    var weekJSONs:Array<String> = Paths.getFolderContents("psych_weeks", true, 2);
+
+    var generatedXML:String = "<songs>\n";
+
+    for(path in weekJSONs) {
+        var json:PsychWeek = Json.parse(File.getContent(path));
+        for(song in json.songs) {
+            // FlxColor in HScript is very
+            // interesting to make
+            var ballNut = new FlxColor();
+            ballNut.setRGB(song[2][0], song[2][1], song[2][2]);
+
+            var xmlSongLine:String = "\t<song name=\""+song[0]+"\" character=\""+song[1]+"\" difficulties=\""+json.difficulties+"\" bgColor=\""+ballNut.toWebString()+"\"/>\n";
+            generatedXML += xmlSongLine;
+        }
+    }
+
+    generatedXML += "</songs>";
+    File.saveContent(Paths.xml("data/freeplaySongList", true), generatedXML);
+    trace(generatedXML);
+    trace("GENERATED FREEPLAY XML FROM PSYCH WEEKS!");
+}

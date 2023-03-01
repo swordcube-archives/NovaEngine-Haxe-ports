@@ -1,0 +1,22 @@
+{
+	"songs": [
+		["Alpha Moogus", "oldpostor", [255, 51, 51]],
+		["Actin Sus", "oldpostor", [255, 51, 51]]
+	],
+	"difficulties": "hard",
+
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "",
+
+	"storyName": "Vs. Impostor V1",
+	"weekBefore": "",
+	"weekName": "Week",
+	"startUnlocked": true,
+
+	"hideStoryMode": false,
+	"hideFreeplay": false
+}

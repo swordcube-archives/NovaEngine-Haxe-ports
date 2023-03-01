@@ -1,0 +1,22 @@
+{
+	"songs": [
+		["Christmas", "fella", [255, 51, 51]],
+		["Spookpostor", "fella", [255, 51, 51]]
+	],
+	"difficulties": "hard",
+
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "",
+
+	"storyName": "Loggo's Halloween",
+	"weekBefore": "",
+	"weekName": "BOO!",
+	"startUnlocked": true,
+
+	"hideStoryMode": false,
+	"hideFreeplay": false
+}

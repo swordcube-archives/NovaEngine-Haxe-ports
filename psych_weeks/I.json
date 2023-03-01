@@ -1,0 +1,24 @@
+{
+	"songs": [
+		["Titular", "henry", [255, 51, 51]],
+		["Greatest Plan", "charles", [255, 51, 51]],
+		["Reinforcements", "ellie", [255, 51, 51]],
+		["Armed", "rhm", [255, 51, 51]]
+	],
+	"difficulties": "hard",
+
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "",
+
+	"storyName": "Battling the Boyfriend",
+	"weekBefore": "",
+	"weekName": "HENRY",
+	"startUnlocked": true,
+
+	"hideStoryMode": false,
+	"hideFreeplay": false
+}

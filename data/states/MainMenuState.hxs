@@ -1,0 +1,4 @@
+function onUpdate(elapsed) {
+    if(FlxG.keys.justPressed.SEVEN)
+        FlxG.switchState(new ModState("HelperAccessState"));
+}

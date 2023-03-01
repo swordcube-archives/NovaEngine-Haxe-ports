@@ -1,0 +1,136 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				-24,
+				7
+			],
+			"anim": "hey",
+			"fps": 24,
+			"name": "stick hey",
+			"indices": []
+		},
+		{
+			"offsets": [
+				-5,
+				0
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "stick idle"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				37,
+				8
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "stick note left",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				36,
+				78
+			],
+			"anim": "singLEFTmiss",
+			"fps": 24,
+			"name": "note left miss",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-12,
+				-21
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "stick note down",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-5,
+				56
+			],
+			"anim": "singDOWNmiss",
+			"fps": 24,
+			"name": "note down miss",
+			"indices": [
+				0,
+				0
+			]
+		},
+		{
+			"offsets": [
+				-34,
+				110
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUPmiss",
+			"loop": false,
+			"name": "note up miss"
+		},
+		{
+			"offsets": [
+				-34,
+				16
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "stick note up"
+		},
+		{
+			"offsets": [
+				66,
+				4
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "stick note right"
+		},
+		{
+			"offsets": [
+				-29,
+				88
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHTmiss",
+			"loop": false,
+			"name": "note right miss"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/stick-bf",
+	"position": [
+		70,
+		320
+	],
+	"healthicon": "stickbf",
+	"flip_x": true,
+	"healthbar_colors": [
+		49,
+		176,
+		209
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 4,
+	"scale": 1
+}
