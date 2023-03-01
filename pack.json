@@ -1,0 +1,12 @@
+{
+    "name": "VS Impostor V4 Port",
+    "description": "vs impostor but it run good",
+    "contributors": [
+        {
+            "name": "swordcube",
+            "role": "Creator"
+        }
+    ],
+    "api_version": "1.0.0",
+    "mod_version": "1.0.0"
+}
