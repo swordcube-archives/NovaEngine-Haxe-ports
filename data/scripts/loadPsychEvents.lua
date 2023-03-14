@@ -40,8 +40,8 @@ function onCreate()
             parent.events:add(event[0], {convertedEvent})
 
             -- Allow the event script to actually run and do shit
-            if event[2] == "Change Character" and not parent.preloadedCharacters:exists(event[3]) then
-                parent.preloadedCharacters:set(event[3], Character:preloadCharacter(event[4]))
+            if event[2] == "Change Character" and not parent.preloadedCharacters:exists(event[4]) then
+                parent.preloadedCharacters:set(event[4], Character:preloadCharacter(event[4]))
             end
             if parent.eventScripts:exists(event[2]) then goto continue2 end
 

@@ -1,4 +1,4 @@
-return -- i don't want the script to run rn
+-- uncomment to unlock this debug functionality
 
 function onUpdatePost()
     if FlxG.keys.justPressed.F1 then
