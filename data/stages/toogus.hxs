@@ -1,0 +1,61 @@
+var bfvent:FlxSprite;
+var ldSpeaker:FlxSprite;
+
+function onCreate() {
+    stage.dadPos.set(0, 50);
+    stage.gfPos.set(400, 80);
+    stage.bfPos.set(970, 50);
+
+    defaultCamZoom = 0.9;
+
+    var bg:FlxSprite = new FlxSprite(-1600, 50).loadGraphic(stageImage('mirabg'));
+    bg.setGraphicSize(Std.int(bg.width * 1.06));
+    bg.scrollFactor.set(1, 1);
+    bg.active = false;
+    add(bg);
+
+    var fg:FlxSprite = new FlxSprite(-1600, 50).loadGraphic(stageImage('mirafg'));
+    fg.setGraphicSize(Std.int(fg.width * 1.06));
+    fg.scrollFactor.set(1, 1);
+    fg.active = false;
+    add(fg);
+
+    // if (PlayState.SONG.name.toLowerCase() == 'sussus toogus')
+    // {
+    //     walker = new WalkingCrewmate(FlxG.random.int(0, 1), [-700, 1850], 50, 0.8);
+    //     add(walker);
+
+    //     var walker2:WalkingCrewmate = new WalkingCrewmate(FlxG.random.int(2, 3), [-700, 1850], 50, 0.8);
+    //     add(walker2);
+
+    //     var walker3:WalkingCrewmate = new WalkingCrewmate(FlxG.random.int(4, 5), [-700, 1850], 50, 0.8);
+    //     add(walker3);
+    // }
+
+    if (PlayState.SONG.name.toLowerCase() == 'lights-down') {
+        bfvent = new FlxSprite(70, 200);
+        bfvent.frames = stageSparrow('bf_mira_vent');
+        bfvent.animation.addByPrefix('vent', 'bf vent', 24, false);
+        bfvent.animation.play('vent');
+        bfvent.scrollFactor.set(1, 1);
+        bfvent.active = true;
+        bfvent.alpha = 0.001;
+        add(bfvent);
+    }
+
+    var tbl:FlxSprite = new FlxSprite(-1600, 50).loadGraphic(stageImage('table_bg'));
+    tbl.setGraphicSize(Std.int(tbl.width * 1.06));
+    tbl.scrollFactor.set(1, 1);
+    tbl.active = false;
+    add(tbl);
+
+    if (PlayState.SONG.name.toLowerCase() == 'lights-down') {
+        ldSpeaker = new FlxSprite(400, 420);
+        ldSpeaker.frames = stageSparrow('stereo_taken');
+        ldSpeaker.animation.addByPrefix('boom', 'stereo boom', 24, false);
+        ldSpeaker.scrollFactor.set(1, 1);
+        ldSpeaker.active = true;
+        ldSpeaker.visible = false;
+        add(ldSpeaker);
+    }
+}

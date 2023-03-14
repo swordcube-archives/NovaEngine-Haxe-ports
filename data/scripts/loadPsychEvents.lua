@@ -30,6 +30,12 @@ function onCreate()
             if event == nil then goto continue2 end
 
             -- Convert the Psych event to a Nova event
+            if event[3] == "0" then
+                event[3] = "2"
+            elseif event[3] == "1" then
+                event[3] = "0"
+            end
+
             local convertedEvent = EventManager:convert({name = event[2], parameters = {event[3], event[4]}})
             parent.events:add(event[0], {convertedEvent})
 

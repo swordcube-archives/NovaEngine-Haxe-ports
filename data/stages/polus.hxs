@@ -3,7 +3,7 @@ function onCreate() {
     stage.gfPos.set(300, -120);
     stage.bfPos.set(870, -150);
 
-    defaultCamZoom = 0.75;
+    defaultCamZoom = 0.78;
 
     var sky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(stageImage('polus_custom_sky'));
     sky.antialiasing = SettingsAPI.antialiasing;

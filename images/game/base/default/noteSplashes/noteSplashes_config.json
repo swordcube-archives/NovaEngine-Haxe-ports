@@ -1,0 +1,18 @@
+{
+    "scale": 1.1,
+    "alpha": 0.6,
+    "antialiasing": true,
+    "positionOffset": {"x": -130, "y": -130},
+    "animations": [
+        {
+            "spritesheetName": "note splash ${DIRECTION} 1",
+            "fps": 24,
+            "offset": {"x": 0, "y": 0}
+        },
+        {
+            "spritesheetName": "note splash ${DIRECTION} 2",
+            "fps": 24,
+            "offset": {"x": 0, "y": 0}
+        }
+    ]
+}

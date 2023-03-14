@@ -1,3 +1,4 @@
 importScript("data/scripts/chordTrail");
 importScript("data/scripts/loadPsychEvents");
 importScript("data/scripts/fnf");
+importScript("data/scripts/impostorUI");
