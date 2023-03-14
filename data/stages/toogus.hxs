@@ -1,3 +1,5 @@
+import objects.ScriptableSprite;
+
 var bfvent:FlxSprite;
 var ldSpeaker:FlxSprite;
 
@@ -20,17 +22,16 @@ function onCreate() {
     fg.active = false;
     add(fg);
 
-    // if (PlayState.SONG.name.toLowerCase() == 'sussus toogus')
-    // {
-    //     walker = new WalkingCrewmate(FlxG.random.int(0, 1), [-700, 1850], 50, 0.8);
-    //     add(walker);
+    if (PlayState.SONG.name.toLowerCase() == 'sussus toogus') {
+        walker = new ScriptableSprite(0, 0, "WalkingCrewmate", [FlxG.random.int(0, 1), [-700, 1850], 50, 0.8]);
+        add(walker, "gf");
 
-    //     var walker2:WalkingCrewmate = new WalkingCrewmate(FlxG.random.int(2, 3), [-700, 1850], 50, 0.8);
-    //     add(walker2);
+        var walker2 = new ScriptableSprite(0, 0, "WalkingCrewmate", [FlxG.random.int(2, 3), [-700, 1850], 50, 0.8]);
+        add(walker2, "gf");
 
-    //     var walker3:WalkingCrewmate = new WalkingCrewmate(FlxG.random.int(4, 5), [-700, 1850], 50, 0.8);
-    //     add(walker3);
-    // }
+        var walker3 = new ScriptableSprite(0, 0, "WalkingCrewmate", [FlxG.random.int(4, 5), [-700, 1850], 50, 0.8]);
+        add(walker3, "gf");
+    }
 
     if (PlayState.SONG.name.toLowerCase() == 'lights-down') {
         bfvent = new FlxSprite(70, 200);

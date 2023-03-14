@@ -1,0 +1,20 @@
+var saxguy:FlxSprite;
+
+function onCreate() {
+    saxguy = new FlxSprite(0, 0);
+    saxguy.frames = Paths.getSparrowAtlas('game/stages/toogus/cyan_toogus');
+    saxguy.animation.addByPrefix('bop', 'Cyan Dancy', 24, true);
+    saxguy.animation.play('bop');
+    saxguy.updateHitbox();
+}
+
+function onEvent(name) {
+    if(name == "Toogus Sax") {
+        saxguy.setPosition(-550, 275);
+        add(saxguy);
+    }
+}
+
+function onUpdate(elapsed) {
+    saxguy.x = FlxMath.lerp(saxguy.x, saxguy.x + 15, FlxMath.bound(elapsed * 9, 0, 1));
+}

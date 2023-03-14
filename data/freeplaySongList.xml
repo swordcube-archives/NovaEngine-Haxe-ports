@@ -12,6 +12,8 @@
 	<song name="Danger" character="black" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Double Kill" character="whiteblack" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Defeat" character="black" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Finale" character="black" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Identity Crisis" character="black" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Ashes" character="maroon" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Magmatic" character="maroon" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Boiling Point" character="boilingpoint" difficulties="hard" bgColor="#FF3333"/>
@@ -21,20 +23,22 @@
 	<song name="Heartbeat" character="pink" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Pinkwave" character="pink" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Pretender" character="pretender" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Sauces Moogus" character="chef" difficulties="hard" bgColor="#FF3333"/>
 	<song name="O2" character="o2" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Voting Time" character="votingtime" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Turbulence" character="redmungus" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Victory" character="warchief" difficulties="hard" bgColor="#FF3333"/>
-	<song name="Titular" character="henry" difficulties="hard" bgColor="#FF3333"/>
-	<song name="Greatest Plan" character="charles" difficulties="hard" bgColor="#FF3333"/>
-	<song name="Reinforcements" character="ellie" difficulties="hard" bgColor="#FF3333"/>
-	<song name="Armed" character="rhm" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Roomcode" character="powers" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Sussy Bussy" character="tomongus" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Rivals" character="tomongus" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Chewmate" character="tomongus" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Tomongus Tuesday" character="tuesday" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Christmas" character="fella" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Spookpostor" character="fella" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Titular" character="henry" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Greatest Plan" character="charles" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Reinforcements" character="ellie" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Armed" character="rhm" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Alpha Moogus" character="oldpostor" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Actin Sus" character="oldpostor" difficulties="hard" bgColor="#FF3333"/>
 </songs>
