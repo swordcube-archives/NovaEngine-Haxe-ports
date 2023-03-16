@@ -4,10 +4,15 @@
 script:import("backend.dependency.ScriptHandler")
 script:import("music.EventManager")
 script:import("music.Song")
+script:import("sys.FileSystem")
 
 local EVENTS = {}
 
 function onCreate()
+    if not FileSystem:exists(Paths:json("songs/"..PlayState.SONG.name.."/events", true)) then
+        return
+    end
+
     EVENTS = Paths:json("songs/"..PlayState.SONG.name.."/events").song
 
     -- haxe arrays are handled slightly differently from lua ones!

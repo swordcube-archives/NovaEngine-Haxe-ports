@@ -73,9 +73,8 @@ function updateScoreText()
     local fcRank = parent:getFCRank()
 
     parent.scoreTxt.text = 'Score: ' .. parent.songScore
-    .. ' | Misses: ' .. parent.songMisses
-    .. ' | Rating: ' .. ((parent.accuracyPressedNotes > 0) and rank:toString() or "?")
-    .. (parent.accuracyPressedNotes > 0 and ' ('..FlxMath:roundDecimal(parent.accuracy * 100, 2)..'%) - '..fcRank or '')
+    .. ' | Combo Breaks: ' .. parent.songMisses
+    .. ' | Accuracy: ' .. ((parent.accuracyPressedNotes > 0) and FlxMath:roundDecimal(parent.accuracy * 100, 2)..'% ['..fcRank..']' or "?")
 
     parent.scoreTxt:applyMarkup(parent.scoreTxt.text, {parent.rankFormat})
 

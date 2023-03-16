@@ -3,20 +3,25 @@
 	<song name="Sabotage" character="impostor" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Meltdown" character="impostor" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Sussus Toogus" character="crewmate" difficulties="hard" bgColor="#FF3333"/>
+
 	<song name="Lights Down" character="impostor3" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Reactor" character="impostor3" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Ejected" character="parasite" difficulties="hard" bgColor="#FF3333"/>
+
 	<song name="Mando" character="yellow" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Dlow" character="yellow" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Oversight" character="white" difficulties="hard" bgColor="#FF3333"/>
+
 	<song name="Danger" character="black" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Double Kill" character="whiteblack" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Defeat" character="black" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Finale" character="black" difficulties="hard" bgColor="#FF3333"/>
-	<song name="Identity Crisis" character="black" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Identity Crisis" character="monotone" difficulties="hard" bgColor="#FF3333"/>
+
 	<song name="Ashes" character="maroon" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Magmatic" character="maroon" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Boiling Point" character="boilingpoint" difficulties="hard" bgColor="#FF3333"/>
+
 	<song name="Delusion" character="gray" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Blackout" character="gray" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Neurotic" character="gray" difficulties="hard" bgColor="#FF3333"/>
@@ -24,21 +29,41 @@
 	<song name="Pinkwave" character="pink" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Pretender" character="pretender" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Sauces Moogus" character="chef" difficulties="hard" bgColor="#FF3333"/>
+
 	<song name="O2" character="o2" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Voting Time" character="votingtime" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Turbulence" character="redmungus" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Victory" character="warchief" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Roomcode" character="powers" difficulties="hard" bgColor="#FF3333"/>
+
 	<song name="Sussy Bussy" character="tomongus" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Rivals" character="tomongus" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Chewmate" character="tomongus" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Tomongus Tuesday" character="tuesday" difficulties="hard" bgColor="#FF3333"/>
+
 	<song name="Christmas" character="fella" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Spookpostor" character="fella" difficulties="hard" bgColor="#FF3333"/>
+
 	<song name="Titular" character="henry" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Greatest Plan" character="charles" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Reinforcements" character="ellie" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Armed" character="rhm" difficulties="hard" bgColor="#FF3333"/>
+
 	<song name="Alpha Moogus" character="oldpostor" difficulties="hard" bgColor="#FF3333"/>
 	<song name="Actin Sus" character="oldpostor" difficulties="hard" bgColor="#FF3333"/>
+
+	<song name="Ow" character="kills" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Who" character="whoguys" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Insane Streamer" character="jerma" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Sussus Nuzzus" character="nuzzles" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Idk" character="idk" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Esculent" character="dead" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Drippypop" character="drippy" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Crewicide" character="dave" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Monotone Attack" character="attack" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Top 10" character="top" difficulties="hard" bgColor="#FF3333"/>
+
+	<song name="Chippin" character="cvp" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Chipping" character="cvp" difficulties="hard" bgColor="#FF3333"/>
+	<song name="Torture" character="ziffy" difficulties="hard" bgColor="#FF3333"/>
 </songs>
