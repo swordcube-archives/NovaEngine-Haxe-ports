@@ -23,7 +23,7 @@ function onCreatePost()
     parent.timeBar.visible = false
     parent.timeTxt.visible = false
 
-    timeTxt = FlxText:new(42 + (FlxG.width / 2) - 585, 20, 400, PlayState.SONG.name, 32)
+    timeTxt = FlxText:new(42 + (FlxG.width / 2) - 585, 20, 400, string:upper(PlayState.SONG.name), 32)
     timeTxt:setFormat(Paths:font("vcr.ttf"), 14, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK)
     timeTxt.cameras = {parent.camHUD}
     timeTxt.alpha = 0
@@ -74,7 +74,8 @@ function updateScoreText()
 
     parent.scoreTxt.text = 'Score: ' .. parent.songScore
     .. ' | Combo Breaks: ' .. parent.songMisses
-    .. ' | Accuracy: ' .. ((parent.accuracyPressedNotes > 0) and FlxMath:roundDecimal(parent.accuracy * 100, 2)..'% ['..fcRank..']' or "?")
+    .. ' | Accuracy: ' .. ((parent.accuracyPressedNotes > 0) and FlxMath:roundDecimal(parent.accuracy * 100, 2)..'%' or "?")
+    .. ((parent.accuracyPressedNotes > 0) and ((fcRank ~= "CLEAR") and " ["..fcRank.."]" or "") or "")
 
     parent.scoreTxt:applyMarkup(parent.scoreTxt.text, {parent.rankFormat})
 

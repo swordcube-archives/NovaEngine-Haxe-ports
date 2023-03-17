@@ -42,5 +42,8 @@ function doTrail(char, color)
         parent:remove(trail, true)
     end
 
+    parent.camGame.zoom = parent.camGame.zoom + 0.015
+    parent.camHUD.zoom = parent.camHUD.zoom + 0.015
+
     parent:insert(parent.members:indexOf(char), trail)
 end
