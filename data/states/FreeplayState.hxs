@@ -1,0 +1,138 @@
+return; // don't wanna work on this rn
+
+var songs:Map<Int, Array<Dynamic>> = [];
+var curPage:Int = 0;
+
+var RequireType = {
+    FROM_STORY_MODE: 0,
+    BEANS: 1,
+    SPECIAL: 2
+};
+
+var starsBG:FlxBackdrop;
+var starsFG:FlxBackdrop;
+var porGlow:FlxSprite;
+
+var portrait:FlxSprite;
+
+function onCreate() {
+    runDefaultCode = false;
+    
+    addSongs();
+
+    starsBG = new FlxBackdrop(Paths.image('impostor/freeplay/starBG'), 1, 1, true, true);
+    starsBG.setPosition(111.3, 67.95);
+    starsBG.updateHitbox();
+    starsBG.scrollFactor.set();
+    add(starsBG);
+
+    starsFG = new FlxBackdrop(Paths.image('impostor/freeplay/starFG'), 1, 1, true, true);
+    starsFG.setPosition(54.3, 59.45);
+    starsFG.updateHitbox();
+    starsFG.scrollFactor.set();
+    add(starsFG);
+
+    porGlow = new FlxSprite(-11.1, -12.65).loadGraphic(Paths.image('impostor/freeplay/backGlow'));
+    porGlow.updateHitbox();
+    porGlow.scrollFactor.set();
+    porGlow.color = FlxColor.RED;
+    add(porGlow);
+
+    portrait = new FlxSprite();
+    portrait.frames = Paths.getSparrowAtlas('impostor/freeplay/portraits');
+
+    var portraits:Array<String> = [
+		'red',
+		'yellow',
+		'green',
+		'tomo',
+		'ham',
+		'black',
+		'white',
+		'para',
+		'pink',
+		'maroon',
+		'grey',
+		'chef',
+		'tit',
+		'ellie',
+		'rhm',
+		'loggo',
+		'clow',
+		'ziffy',
+		'chips',
+		'oldpostor',
+		'top',
+		'jorsawsee'
+		'warchief',
+		'redmungus',
+		'bananungus',
+		'powers',
+		'kills',
+		'jerma',
+		'who',
+		'monotone',
+		'charles',
+		'finale',
+		'pop',
+		'torture',
+		'dave',
+		'bpmar',
+		'grinch',
+		'redmunp',
+		'nuzzus',
+		'monotoner',
+		'idk',
+		'esculent'
+    ];
+    for(i in 0...portraits.length) {
+        var character:String = portraits[i];
+        portrait.animation.addByIndices(character, 'Character', [i+1], null, 24, true);
+    }
+    portrait.animation.play('red');
+    portrait.setPosition(304.65, -100);
+    portrait.updateHitbox();
+    portrait.scrollFactor.set();
+    add(portrait);
+
+    var card = new ModSprite(0, 0, "FreeplayCard", ["ass", "cock", FlxColor.BLUE, "yellow", RequireType.FROM_STORY_MODE, ["deadth"]]);
+    add(card);
+}
+
+function onUpdate(elapsed) {
+    starsBG.x -= elapsed * 9 * 0.5;
+    starsFG.x -= elapsed * 9;
+}
+
+function addSongs() {
+    songs = [
+        // Based on page
+        0 => [
+            ["Sussus Moogus", "impostor", 'red', FlxColor.RED, RequireType.FROM_STORY_MODE, ['sussus moogus'], 0, false],
+            ["Sabotage", "impostor", 'red', FlxColor.RED, RequireType.FROM_STORY_MODE, ['sabotage'], 0, false],
+            ["Meltdown", "impostor2", 'red', FlxColor.RED, RequireType.FROM_STORY_MODE, ['meltdown'], 0, false],
+
+            ["Sussus Toogus", "crewmate", 'green', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['sussus toogus'], 0, false],
+            ["Lights Down", "impostor3", 'green', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['lights down'], 0, false],
+            ["Reactor", "impostor3", 'green', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['reactor'], 0, false],
+            ["Ejected", "parasite", 'para', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['ejected'], 0, false],
+
+            ["Mando", "yellow", 'yellow', FlxColor.fromRGB(255, 218, 67), RequireType.FROM_STORY_MODE, ['mando'], 0, false],
+            ["Dlow", "yellow", 'yellow', FlxColor.fromRGB(255, 218, 67), RequireType.FROM_STORY_MODE, ['dlow'], 0, false],
+            ["Oversight", "white", 'white', FlxColor.WHITE, RequireType.FROM_STORY_MODE, ['oversight'], 0, false],
+            ["Danger", "black", 'black', FlxColor.fromRGB(179, 0, 255), RequireType.FROM_STORY_MODE, ['danger'], 0, false],
+            ["Double Kill", "whiteblack", 'black', FlxColor.fromRGB(179, 0, 255), RequireType.FROM_STORY_MODE, ['double kill'], 0, false],
+
+            ["Defeat", "black", 'black', FlxColor.fromRGB(179, 0, 255), RequireType.FROM_STORY_MODE, ['defeat'], 0, false],
+            ["Finale", "black", 'finale', FlxColor.fromRGB(179, 0, 255), RequireType.SPECIAL, ['finale'], 0, false],
+
+            ["Identity Crisis", "monotone", 'monotone', FlxColor.BLACK, RequireType.SPECIAL, ['meltdown', 'ejected', 'double kill', 'defeat', 'boiling point', 'neurotic', 'pretender'], 0, false]
+        ],
+
+        1 => [
+            ["Ashes", "maroon", 'maroon', FlxColor.fromRGB(181, 0, 0), RequireType.FROM_STORY_MODE, ['ashes'], 0, false],
+            ["Magmatic", "maroon", 'maroon', FlxColor.fromRGB(181, 0, 0), RequireType.FROM_STORY_MODE, ['magmatic'], 0, false],
+            ["Boiling Point", "boilingpoint", 'bpmar', FlxColor.fromRGB(181, 0, 0), RequireType.FROM_STORY_MODE, ['boiling point'], 0, false]
+        ]
+    ];
+}

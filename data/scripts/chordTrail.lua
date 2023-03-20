@@ -4,7 +4,7 @@ local lastNote = {
 }
 
 function onOpponentHit(event)
-    local doDouble = (not event.note.isSustainNote) and ((event.note.strumTime - lastNote.dad.time) <= 2) and (event.note.noteData ~= lastNote.dad.data)
+    local doDouble = (not event.note.isSustainNote) and (math.abs(event.note.strumTime - lastNote.dad.time) <= 2) and (event.note.noteData ~= lastNote.dad.data)
 
     if doDouble then
         local char = parent.dad
@@ -16,7 +16,7 @@ function onOpponentHit(event)
 end
 
 function onPlayerHit(event)
-    local doDouble = (not event.note.isSustainNote) and ((event.note.strumTime - lastNote.bf.time) <= 2) and (event.note.noteData ~= lastNote.bf.data)
+    local doDouble = (not event.note.isSustainNote) and (math.abs(event.note.strumTime - lastNote.bf.time) <= 2) and (event.note.noteData ~= lastNote.bf.data)
 
     if doDouble then
         local char = parent.boyfriend

@@ -7,7 +7,7 @@ var time:Float = 0;
 var right:Bool = true;
 var hibernating:Bool = false;
 
-function onCreate(thecolor:Int, range:Array<Float>, height:Float, thescale:Float) {
+function onCreate(theColor:Int, range:Array<Float>, height:Float, thescale:Float) {
 	trace("JWDASJLSKADALSKMDASDL;KJASDKL;ADSKASDKJASDKJKJASDLJKSDAJDKJASDAJASDJKALKJDSASDLKJ");
 	setPosition(FlxG.random.float(range[1] - range[0]), height);
 

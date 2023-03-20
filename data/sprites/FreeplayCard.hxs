@@ -1,0 +1,55 @@
+var spriteOne:FlxSprite;
+var icon:FlxSprite;
+var trueX:Float;
+var trueY:Float;
+var coloring:FlxColor;
+var iconName:String;
+var songText:FlxText;
+var portrait:String;
+var songName:String;
+var targetY:Float = 0;
+var forceX:Float = Math.NEGATIVE_INFINITY;
+var yMult:Float = 100;
+var xAdd:Float = 0;
+var yAdd:Float = 0;
+var deAlpha:Float = 0;
+
+var lock:FlxSprite;
+var priceText:FlxText;
+var price:Int = 0;
+var locked:Bool = true;
+var shuffleLetters:Array<String> = [];
+var bean:FlxSprite;
+var requirementtype:Int;
+
+var shuffleTimer:FlxTimer;
+
+var RequireType = {
+    FROM_STORY_MODE: 0,
+    BEANS: 1,
+    SPECIAL: 2
+};
+
+function new(song:String, namer:String, colord:FlxColor, portraits:String, ?requirement:Int, ?songs:Array<String>, _price:Int = 0, ?forceUnlock = false) {
+    loadGraphic(Paths.image('impostor/freeplay/songPanel'));
+
+    trueX = x;
+    trueY = y;
+    iconName = namer;
+    coloring = colord;
+    songName = song;
+    portrait = portraits;
+    requirementtype = requirement;
+    price = _price;
+
+    lock = new FlxSprite(0, 0);
+    if(requirement != RequireType.SPECIAL) 
+        lock.frames = Paths.getSparrowAtlas('impostor/freeplay/lock'); 
+    else 
+        lock.frames = Paths.getSparrowAtlas('impostor/freeplay/lockGold');
+
+    lock.animation.addByPrefix('lock', 'lock0', 24, true);
+    lock.animation.addByPrefix('unlock', 'lock open', 24, false);
+    lock.animation.play('lock');
+    lock.updateHitbox();
+}

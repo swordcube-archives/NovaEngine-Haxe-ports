@@ -1,4 +1,4 @@
-import objects.ScriptableSprite;
+import objects.ModSprite;
 
 var bfvent:FlxSprite;
 var ldSpeaker:FlxSprite;
@@ -23,14 +23,14 @@ function onCreate() {
     add(fg);
 
     if (PlayState.SONG.name.toLowerCase() == 'sussus toogus') {
-        walker = new ScriptableSprite(0, 0, "WalkingCrewmate", [FlxG.random.int(0, 1), [-700, 1850], 50, 0.8]);
-        add(walker, "gf");
+        walker = new ModSprite(0, 0, "WalkingCrewmate", [FlxG.random.int(0, 1), [-700, 1850], 50, 0.8]);
+        add(walker);
 
-        var walker2 = new ScriptableSprite(0, 0, "WalkingCrewmate", [FlxG.random.int(2, 3), [-700, 1850], 50, 0.8]);
-        add(walker2, "gf");
+        var walker2 = new ModSprite(0, 0, "WalkingCrewmate", [FlxG.random.int(2, 3), [-700, 1850], 50, 0.8]);
+        add(walker2);
 
-        var walker3 = new ScriptableSprite(0, 0, "WalkingCrewmate", [FlxG.random.int(4, 5), [-700, 1850], 50, 0.8]);
-        add(walker3, "gf");
+        var walker3 = new ModSprite(0, 0, "WalkingCrewmate", [FlxG.random.int(4, 5), [-700, 1850], 50, 0.8]);
+        add(walker3);
     }
 
     if (PlayState.SONG.name.toLowerCase() == 'lights-down') {
