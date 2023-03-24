@@ -1,7 +1,25 @@
-return; // don't wanna work on this rn
+import flixel.input.mouse.FlxMouseEventManager;
+import backend.utilities.MathUtil;
+import flixel.FlxCamera;
+import music.Song;
+import backend.Highscore;
+
+// THIS IS FOR DEBUGGING ONLY IF YOU CHEAT WITH THIS
+// UHHH
+
+
+
+
+
+
+// FUCK YOU LOL!
+var enableDebugging:Bool = false; // ENABLE TO BASICALLY CHEAT!!!
 
 var songs:Map<Int, Array<Dynamic>> = [];
+var totalPages:Int = 0;
+
 var curPage:Int = 0;
+var curSelected:Int = 0;
 
 var RequireType = {
     FROM_STORY_MODE: 0,
@@ -9,39 +27,476 @@ var RequireType = {
     SPECIAL: 2
 };
 
+var localBeans:Int = 0;
+
 var starsBG:FlxBackdrop;
 var starsFG:FlxBackdrop;
 var porGlow:FlxSprite;
 
+var portraitTween:FlxTween;
+var grpSongs:FlxTypedGroup;
+
+var curPortrait:String = "red";
 var portrait:FlxSprite;
+
+var crossImage:FlxSprite;
+var camUpper:FlxCamera;
+
+var rimlight:CustomShader;
+var buttonTween:FlxTween;
+var lockTween:FlxTween;
+var textTween:FlxTween;
+
+var infoText:FlxText;
+var beanText:FlxText;
+
+var lerpScore:Int = 0;
+var intendedScore:Int = 0;
+
+var hasSavedData:Bool = false;
+var localWeeks:Map<Int, Array<FreeplaySong>> = [0 => null];
 
 function onCreate() {
     runDefaultCode = false;
     
     addSongs();
 
-    starsBG = new FlxBackdrop(Paths.image('impostor/freeplay/starBG'), 1, 1, true, true);
+    localBeans = SettingsAPI.get(mod+":beans");
+    if(localBeans == null) localBeans = 0; // no null bean!
+
+    if(SettingsAPI.get(mod+":forceUnlockedSongs") != null){
+        localWeeks = SettingsAPI.get(mod+":forceUnlockedSongs");
+        hasSavedData = true;
+    } else {
+        localWeeks = songs;
+    }
+
+    camUpper = new FlxCamera();
+    camUpper.bgColor = 0x0;
+    FlxG.cameras.add(camUpper, false);
+
+    add(starsBG = new FlxBackdrop(Paths.image('impostor/freeplay/starBG'), 1, 1, true, true));
     starsBG.setPosition(111.3, 67.95);
     starsBG.updateHitbox();
     starsBG.scrollFactor.set();
-    add(starsBG);
 
-    starsFG = new FlxBackdrop(Paths.image('impostor/freeplay/starFG'), 1, 1, true, true);
+    add(starsFG = new FlxBackdrop(Paths.image('impostor/freeplay/starFG'), 1, 1, true, true));
     starsFG.setPosition(54.3, 59.45);
     starsFG.updateHitbox();
     starsFG.scrollFactor.set();
-    add(starsFG);
 
-    porGlow = new FlxSprite(-11.1, -12.65).loadGraphic(Paths.image('impostor/freeplay/backGlow'));
+    add(porGlow = new FlxSprite(-11.1, -12.65).loadGraphic(Paths.image('impostor/freeplay/backGlow')));
     porGlow.updateHitbox();
     porGlow.scrollFactor.set();
     porGlow.color = FlxColor.RED;
-    add(porGlow);
 
     portrait = new FlxSprite();
     portrait.frames = Paths.getSparrowAtlas('impostor/freeplay/portraits');
 
-    var portraits:Array<String> = [
+    var portraits:Array<String> = obtainPortraits();
+    for(i in 0...portraits.length) {
+        var character:String = portraits[i];
+        portrait.animation.addByIndices(character, 'Character', [i+1], null, 24, true);
+    }
+    portrait.setPosition(304.65, -100);
+    portrait.updateHitbox();
+    portrait.scrollFactor.set();
+    add(portrait);
+
+    rimlight = new CustomShader("shaders/RimlightShader");
+    rimlight.data.angle.value = [315];
+	rimlight.data.pixelSize.value = [1 / portrait.graphic.width, 1 / portrait.graphic.height];
+	rimlight.data.distance.value = [10.0];
+
+    var daColor = FlxColor.WHITE;
+
+    // i totoally did not steal from lj's impsotor port!!
+    var red = (daColor >> 16) & 0xff;
+	var green = (daColor >> 8) & 0xff;
+	var blue = daColor & 0xff;
+	var alpha = (daColor >> 24) & 0xff;
+
+    rimlight.data.rimlightColor.value = [red / 255, green / 255, blue / 255, alpha / 255];
+    portrait.shader = rimlight;
+
+    add(grpSongs = new FlxTypedGroup());
+
+    var ass = [for(i in songs.keys()) i];
+    totalPages = ass.length;
+
+    var upperBar = new FlxSprite(-2, -1.4).loadGraphic(Paths.image('impostor/freeplay/topBar'));
+    upperBar.cameras = [camUpper];
+    add(upperBar);
+
+    crossImage = new FlxSprite(12.50, 8.05).loadGraphic(Paths.image('impostor/freeplay/menuBack'));
+    crossImage.cameras = [camUpper];
+    add(crossImage);
+
+    topBean = new FlxSprite(30, 100).loadGraphic(Paths.image('impostor/shop/bean'));
+    topBean.antialiasing = true;
+    topBean.cameras = [camUpper];
+    topBean.updateHitbox();
+    add(topBean);	
+
+    beanText = new FlxText(110, 105, 200, localBeans, 35);
+    beanText.setFormat(Paths.font("ariblk.ttf"), 35, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+    beanText.borderSize = 3;
+    beanText.cameras = [camUpper];
+    add(beanText);
+
+    infoText = new FlxText(1071.05, 91, 0, '291921 \n Rating: 32 \n', 48);
+    infoText.setFormat(Paths.font("vcr.ttf"), 36, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+    add(infoText);
+
+    changePage(0);
+    changePortrait();
+}
+
+function changePage(?change:Int) {
+    if(change == null) change = 0;
+
+    if(buttonTween != null) buttonTween.cancel();
+    if(lockTween != null) lockTween.cancel();
+    if(textTween != null) textTween.cancel();
+
+    buttonTween = lockTween = textTween = null;
+
+    curPage = FlxMath.wrap(curPage + change, 0, totalPages - 1);
+
+    grpSongs.forEach((card:FreeplayCard) -> {
+        card.kill();
+        card.destroy();
+    });
+    grpSongs.clear();
+
+    curSelected = 0;
+    for(i in 0...songs[curPage].length) {
+        var data = (hasSavedData) ? localWeeks[curPage][i] : songs[curPage][i];
+        
+        var song:String = data[0];
+        var icon:String = data[1];
+        var portrait:String = data[2];
+        var portraitColor:Int = data[3];
+        var requirement:RequireType = data[4];
+        var songs:Array<String> = data[5];
+        var beans:Int = data[6];
+        var locked:Bool = data[7];
+
+        var card = new ModSprite(0, 0, "FreeplayCard", [song, icon, beans, songs, requirement, locked]);
+        card.alpha = 0.2;
+        card.x = -70 - Math.abs((i - curSelected) * 65);
+        card.y = ((FlxG.height - card.height) * 0.5) + (((card.height + 20) * (i - curSelected)) + 15);
+        grpSongs.add(card);
+    }
+
+    changeSelection();
+}
+
+function changeSelection(?change:Int) {
+    if(change == null) change = 0;
+
+    // += won't fucking work!!! >:((
+    curSelected = curSelected + change;
+    if(curSelected < 0) {
+        changePage(-1);
+        curSelected = songs[curPage].length - 1;
+        changePortrait();
+        return;
+    }
+    if(curSelected >= songs[curPage].length) {
+        changePage(1);
+        return;
+    }
+
+    var swagPortrait:String = songs[curPage][curSelected][2];
+    if(curPortrait != swagPortrait)
+        changePortrait();
+    
+    curPortrait = swagPortrait;
+
+    var daColor = songs[curPage][curSelected][3];
+
+    // i totoally did not steal from lj's impsotor port!!
+    var red = (daColor >> 16) & 0xff;
+    var green = (daColor >> 8) & 0xff;
+    var blue = daColor & 0xff;
+
+    rimlight.data.rimlightColor.value = [red / 255, green / 255, blue / 255, 1];
+
+    intendedScore = Highscore.getScore(songs[curPage][curSelected][0].toLowerCase(), "hard");
+
+    CoolUtil.playMenuSFX(0);
+}
+
+function changePortrait() {
+    // i can't do a tween here like the actual mod
+    // but i literally cannot notice the tween so like fuck you
+    porGlow.color = songs[curPage][curSelected][3];
+
+    portrait.animation.play(songs[curPage][curSelected][2]);
+    portrait.x = 504.65;
+    portrait.alpha = 0;
+
+    if(grpSongs.members[curSelected].script.get("locked")) {
+        portrait.color = 0xFF000000;
+        portrait.shader = rimlight;
+    } else {
+        portrait.color = 0xFFFFFFFF;
+        portrait.shader = null;
+    }
+
+    if(portraitTween != null) portraitTween.cancel();
+    portraitTween = FlxTween.tween(portrait, {x: 304.65, alpha: 1}, 0.3, {ease: FlxEase.expoOut});
+}
+
+var lockMovement:Bool = false;
+
+function onUpdate(elapsed) {
+    beanText.text = Std.string(localBeans);
+
+    lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, FlxMath.bound(elapsed * 24, 0, 1)));
+
+    if (Math.abs(lerpScore - intendedScore) <= 10)
+        lerpScore = intendedScore;
+
+    infoText.text = "Score: "+lerpScore;
+    infoText.x = FlxG.width - infoText.width - 6;
+
+    rimlight.data.bounds.value = [
+		portrait.frame.uv.left,
+		portrait.frame.uv.top,
+		portrait.frame.uv.right,
+		portrait.frame.uv.bottom
+	];
+
+    starsBG.x -= elapsed * 9 * 0.5;
+    starsFG.x -= elapsed * 9;
+
+    if(FlxG.mouse.overlaps(crossImage) && FlxG.mouse.justPressed) {
+        goBack();
+        return;
+    }
+
+    var i:Int = 0;
+    grpSongs.forEach((song:FreeplayCard) -> {
+        song.x = MathUtil.lerp(song.x, 70 - Math.abs((i - curSelected) * 65), 0.15);
+        song.y = MathUtil.lerp(song.y, ((FlxG.height - song.height) * 0.5) + (((song.height + 20) * (i - curSelected)) + 15), 0.15);
+        song.alpha = MathUtil.lerp(song.alpha, 1 / (Math.abs(i - curSelected) * 1.5), 0.15);
+
+        i++;
+    });
+
+    if(enableDebugging) {
+        if(FlxG.keys.justPressed.B) {
+            // infitnneinte bean!!
+            localBeans = 999999;
+        }
+
+        if(FlxG.keys.justPressed.U) {
+            // unlocks every story mode & special song
+            for(list in songs) {
+                for(song in list)
+                    Highscore.setScore(song[0].toLowerCase(), "hard", 999999);
+            }
+            changePage(0);
+            changePortrait();
+        }
+
+        if(FlxG.keys.justPressed.I) {
+            // locks every story mode & special song
+            for(list in songs) {
+                for(song in list)
+                    Highscore.setScore(song[0].toLowerCase(), "hard", 0);
+            }
+            changePage(0);
+            changePortrait();
+        }
+
+        if(FlxG.keys.justPressed.O) {
+            // unlocks every song that requires beans
+            for(page in songs.keys()) {
+                for(i in 0...songs[page].length)
+                    localWeeks[page][i][7] = true;
+            }
+            changePage(0);
+            changePortrait();
+        }
+
+        if(FlxG.keys.justPressed.P) {
+            // locks every song that requires beans
+            for(page in songs.keys()) {
+                for(i in 0...songs[page].length)
+                    localWeeks[page][i][7] = false;
+            }
+            changePage(0);
+            changePortrait();
+        }
+    }
+
+    if(!lockMovement) {
+        if(controls.UI_UP_P || FlxG.mouse.wheel > 0) changeSelection(-1);
+        if(controls.UI_DOWN_P || FlxG.mouse.wheel < 0) changeSelection(1);
+
+        if(controls.UI_LEFT_P) changePage(-1);
+        if(controls.UI_RIGHT_P) changePage(1);
+
+        if(controls.ACCEPT) {
+            var pulseColor:FlxColor = null;
+
+            // unlocks the current song
+            var requirement:RequireType = grpSongs.members[curSelected].script.get("requirement");
+            var price:Int = songs[curPage][curSelected][6];
+
+            if(grpSongs.members[curSelected].script.get("locked")) {
+                if(localWeeks[curPage][curSelected][7] == false && requirement == RequireType.BEANS && localBeans >= price) {
+                    localWeeks[curPage][curSelected][7] = true;
+
+                    lockMovement = true;
+                    grpSongs.members[curSelected].script.call("unlockAnim");
+
+                    new FlxTimer().start(1.45, (tmr:FlxTimer) -> {
+                        changePortrait();
+                        lockMovement = false;
+                    });
+
+                    localBeans -= price;
+                    return;
+                }
+
+                FlxG.sound.play(Paths.sound('locked'), 0.7);
+                camUpper.shake(0.01, 0.35);
+                FlxG.camera.shake(0.005, 0.35);
+                pulseColor = 0xFFFF4444;
+
+                if(buttonTween != null) buttonTween.cancel();
+                buttonTween = FlxTween.color(grpSongs.members[curSelected], 0.6, pulseColor, 0xFF4A4A4A, { ease: FlxEase.sineOut });
+                if(lockTween != null) lockTween.cancel();
+                lockTween = FlxTween.color(grpSongs.members[curSelected].script.get("lock"), 0.6, pulseColor, 0xFFFFFFFF, { ease: FlxEase.sineOut });
+                if(textTween != null) textTween.cancel();
+                textTween = FlxTween.color(grpSongs.members[curSelected].script.get("songText"), 0.5, pulseColor, 0xFFFFFFFF, { ease: FlxEase.sineOut });
+            } else {
+                SettingsAPI.set(mod+":beans", localBeans);
+                SettingsAPI.set(mod+":forceUnlockedSongs", localWeeks);
+                SettingsAPI.flush();
+
+                PlayState.SONG = Song.loadChart(songs[curPage][curSelected][0], "hard");
+                PlayState.isStoryMode = false;
+                PlayState.campaignScore = 0;
+                PlayState.storyDifficulty = "hard";
+                FlxG.switchState(new PlayState());
+            }
+        }
+    }
+
+    if(controls.BACK) goBack();
+}
+
+function goBack() {
+    SettingsAPI.set(mod+":beans", localBeans);
+    SettingsAPI.set(mod+":forceUnlockedSongs", localWeeks);
+    SettingsAPI.flush();
+    
+    CoolUtil.playMenuSFX(2);
+    FlxG.switchState(new states.menus.MainMenuState());
+}
+
+// ADD YO SONGS HERE
+function addSongs() {
+    songs = [
+        // Based on page
+        0 => [
+            ["Sussus Moogus", "impostor", 'red', FlxColor.RED, RequireType.FROM_STORY_MODE, ['sussus moogus'], 0, false],
+            ["Sabotage", "impostor", 'red', FlxColor.RED, RequireType.FROM_STORY_MODE, ['sabotage'], 0, false],
+            ["Meltdown", "impostor2", 'red', FlxColor.RED, RequireType.FROM_STORY_MODE, ['meltdown'], 0, false],
+
+            ["Sussus Toogus", "crewmate", 'green', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['sussus toogus'], 0, false],
+            ["Lights Down", "impostor3", 'green', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['lights down'], 0, false],
+            ["Reactor", "impostor3", 'green', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['reactor'], 0, false],
+            ["Ejected", "parasite", 'para', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['ejected'], 0, false],
+
+            ["Mando", "yellow", 'yellow', FlxColor.fromRGB(255, 218, 67), RequireType.FROM_STORY_MODE, ['mando'], 0, false],
+            ["Dlow", "yellow", 'yellow', FlxColor.fromRGB(255, 218, 67), RequireType.FROM_STORY_MODE, ['dlow'], 0, false],
+            ["Oversight", "white", 'white', FlxColor.WHITE, RequireType.FROM_STORY_MODE, ['oversight'], 0, false],
+            ["Danger", "black", 'black', FlxColor.fromRGB(179, 0, 255), RequireType.FROM_STORY_MODE, ['danger'], 0, false],
+            ["Double Kill", "whiteblack", 'black', FlxColor.fromRGB(179, 0, 255), RequireType.FROM_STORY_MODE, ['double kill'], 0, false],
+
+            ["Defeat", "black", 'black', FlxColor.fromRGB(179, 0, 255), RequireType.FROM_STORY_MODE, ['defeat'], 0, false],
+            ["Finale", "black", 'finale', FlxColor.fromRGB(179, 0, 255), RequireType.SPECIAL, ['finale'], 0, false],
+
+            ["Identity Crisis", "monotone", 'monotone', 0xFF000000, RequireType.SPECIAL, ['meltdown', 'ejected', 'double kill', 'defeat', 'boiling point', 'neurotic', 'pretender'], 0, false]
+        ],
+
+        1 => [
+            ["Ashes", "maroon", 'maroon', FlxColor.fromRGB(181, 0, 0), RequireType.FROM_STORY_MODE, ['ashes'], 0, false],
+            ["Magmatic", "maroon", 'maroon', FlxColor.fromRGB(181, 0, 0), RequireType.FROM_STORY_MODE, ['magmatic'], 0, false],
+            ["Boiling Point", "boilingpoint", 'bpmar', FlxColor.fromRGB(181, 0, 0), RequireType.FROM_STORY_MODE, ['boiling point'], 0, false],
+
+            ["Delusion", "gray", 'grey', FlxColor.fromRGB(139, 157, 168), RequireType.FROM_STORY_MODE, ['delusion'], 0, false],
+            ["Blackout", "gray", 'grey', FlxColor.fromRGB(139, 157, 168), RequireType.FROM_STORY_MODE, ['blackout'], 0, false],
+            ["Neurotic", "gray", 'grey', FlxColor.fromRGB(139, 157, 168), RequireType.FROM_STORY_MODE, ['neurotic'], 0, false],
+
+            ["Heartbeat", "pink", 'pink', FlxColor.fromRGB(255, 0, 222), RequireType.FROM_STORY_MODE, ['heartbeat'], 0, false],
+            ["Pinkwave", "pink", 'pink', FlxColor.fromRGB(255, 0, 222), RequireType.FROM_STORY_MODE, ['pinkwave'], 0, false],
+            ["Pretender", "pretender", 'pink', FlxColor.fromRGB(255, 0, 222), RequireType.FROM_STORY_MODE, ['pretender'], 0, false],
+
+            ["Sauces Moogus", "chef", 'chef', FlxColor.fromRGB(242, 114, 28), RequireType.SPECIAL, ['ashes', 'delusion', 'heartbeat'], 0, false],
+
+            ["O2", "jorsawsee", 'jorsawsee', FlxColor.fromRGB(38, 127, 230), RequireType.FROM_STORY_MODE, ['o2'], 0],
+            ["Voting Time", "votingtime", 'warchief', FlxColor.fromRGB(153, 67, 196), RequireType.FROM_STORY_MODE, ['voting time'], 0, false],
+            ["Turbulence", "redmungus", 'redmunp', FlxColor.RED, RequireType.FROM_STORY_MODE, ['turbulence'], 0, false],
+            ["Victory", "warchief", 'warchief', FlxColor.fromRGB(153, 67, 196), RequireType.FROM_STORY_MODE, ['victory'], 0, false],
+
+            ["ROOMCODE", "powers", 'powers', FlxColor.fromRGB(80, 173, 235), RequireType.SPECIAL, ['victory'], 0, false]
+        ],
+
+        2 => [
+            ["Sussy Bussy", "tomongus", 'tomo', FlxColor.fromRGB(255, 90, 134), RequireType.FROM_STORY_MODE, ['sussy bussy'], 0, false],
+            ["Rivals", "tomongus", 'tomo', FlxColor.fromRGB(255, 90, 134), RequireType.FROM_STORY_MODE, ['rivals'], 0, false],
+            ["Chewmate", "hamster", 'ham', FlxColor.fromRGB(255, 90, 134), RequireType.FROM_STORY_MODE, ['chewmate'], 0, false],
+
+            ["Tomongus Tuesday", "tuesday", 'tomo', FlxColor.fromRGB(255, 90, 134), RequireType.SPECIAL, ['chewmate'], 0, false]
+        ],
+
+        3 => [
+            ["Christmas", "fella", 'loggo', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['christmas'], 0, false],
+            ["Spookpostor", "boo", 'loggo', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['spookpostor'], 0, false]
+        ],
+
+        4 => [
+            ["Titular", "henry", 'tit', FlxColor.ORANGE, RequireType.FROM_STORY_MODE, ['titular'], 0, false],
+            ["Greatest Plan", "charles", 'charles', FlxColor.RED, RequireType.FROM_STORY_MODE, ['greatest plan'], 0, false],
+            ["Reinforcements", "ellie", 'ellie', FlxColor.ORANGE, RequireType.FROM_STORY_MODE, ['reinforcements'], 0, false],
+            ["Armed", "rhm", 'rhm', FlxColor.ORANGE, RequireType.FROM_STORY_MODE, ['armed'], 0, false]
+        ],
+
+        5 => [
+            ["Alpha Moogus", "oldpostor", 'oldpostor', FlxColor.RED, RequireType.BEANS, [], 250, false],
+            ["Actin Sus", "oldpostor", 'oldpostor', FlxColor.RED, RequireType.BEANS, [], 250, false]
+        ],
+        
+        6 => [
+            ["Ow", "kills", 'kills', FlxColor.fromRGB(84, 167, 202), RequireType.BEANS, [], 400, false],
+            ["Who", "whoguys", 'who', FlxColor.fromRGB(22, 65, 240), RequireType.BEANS, [], 500, false],
+            ["Insane Streamer", "jerma", 'jerma', FlxColor.BLACK, RequireType.BEANS, [], 400, false],
+            ["Sussus Nuzzus", "nuzzles", 'nuzzus', FlxColor.BLACK, RequireType.BEANS, [], 400, false],
+            ["Idk", "idk", 'idk', FlxColor.fromRGB(255, 140, 177), RequireType.BEANS, [], 350, false],
+            ["Esculent", "dead", 'esculent', FlxColor.BLACK, RequireType.BEANS, [], 350, false],
+            ["Drippypop", "drippy", 'pop', FlxColor.fromRGB(188, 106, 223), RequireType.BEANS, [], 425, false],
+            ["Crewicide", "dave", 'dave', FlxColor.BLUE, RequireType.BEANS, [], 450, false],
+            ["Monotone Attack", "attack", 'monotoner', FlxColor.WHITE, RequireType.BEANS, [], 400, false],
+            ["Top 10", "top", 'top', FlxColor.RED, RequireType.BEANS, [], 200, false]
+        ],
+
+        7 => [
+            ["Chippin", "cvp", 'chips', FlxColor.fromRGB(255, 60, 38), RequireType.BEANS, [], 300, false],
+            ["Chipping", "cvp", 'chips', FlxColor.fromRGB(255, 60, 38), RequireType.BEANS, [], 300, false],
+            ["Torture", "ziffy", 'torture', FlxColor.fromRGB(188, 106, 223), RequireType.SPECIAL, ['chippin', 'chipping'], 0, false]
+        ]
+    ];
+}
+
+function obtainPortraits() {
+    return [
 		'red',
 		'yellow',
 		'green',
@@ -84,55 +539,5 @@ function onCreate() {
 		'monotoner',
 		'idk',
 		'esculent'
-    ];
-    for(i in 0...portraits.length) {
-        var character:String = portraits[i];
-        portrait.animation.addByIndices(character, 'Character', [i+1], null, 24, true);
-    }
-    portrait.animation.play('red');
-    portrait.setPosition(304.65, -100);
-    portrait.updateHitbox();
-    portrait.scrollFactor.set();
-    add(portrait);
-
-    var card = new ModSprite(0, 0, "FreeplayCard", ["ass", "cock", FlxColor.BLUE, "yellow", RequireType.FROM_STORY_MODE, ["deadth"]]);
-    add(card);
-}
-
-function onUpdate(elapsed) {
-    starsBG.x -= elapsed * 9 * 0.5;
-    starsFG.x -= elapsed * 9;
-}
-
-function addSongs() {
-    songs = [
-        // Based on page
-        0 => [
-            ["Sussus Moogus", "impostor", 'red', FlxColor.RED, RequireType.FROM_STORY_MODE, ['sussus moogus'], 0, false],
-            ["Sabotage", "impostor", 'red', FlxColor.RED, RequireType.FROM_STORY_MODE, ['sabotage'], 0, false],
-            ["Meltdown", "impostor2", 'red', FlxColor.RED, RequireType.FROM_STORY_MODE, ['meltdown'], 0, false],
-
-            ["Sussus Toogus", "crewmate", 'green', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['sussus toogus'], 0, false],
-            ["Lights Down", "impostor3", 'green', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['lights down'], 0, false],
-            ["Reactor", "impostor3", 'green', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['reactor'], 0, false],
-            ["Ejected", "parasite", 'para', FlxColor.fromRGB(0, 255, 0), RequireType.FROM_STORY_MODE, ['ejected'], 0, false],
-
-            ["Mando", "yellow", 'yellow', FlxColor.fromRGB(255, 218, 67), RequireType.FROM_STORY_MODE, ['mando'], 0, false],
-            ["Dlow", "yellow", 'yellow', FlxColor.fromRGB(255, 218, 67), RequireType.FROM_STORY_MODE, ['dlow'], 0, false],
-            ["Oversight", "white", 'white', FlxColor.WHITE, RequireType.FROM_STORY_MODE, ['oversight'], 0, false],
-            ["Danger", "black", 'black', FlxColor.fromRGB(179, 0, 255), RequireType.FROM_STORY_MODE, ['danger'], 0, false],
-            ["Double Kill", "whiteblack", 'black', FlxColor.fromRGB(179, 0, 255), RequireType.FROM_STORY_MODE, ['double kill'], 0, false],
-
-            ["Defeat", "black", 'black', FlxColor.fromRGB(179, 0, 255), RequireType.FROM_STORY_MODE, ['defeat'], 0, false],
-            ["Finale", "black", 'finale', FlxColor.fromRGB(179, 0, 255), RequireType.SPECIAL, ['finale'], 0, false],
-
-            ["Identity Crisis", "monotone", 'monotone', FlxColor.BLACK, RequireType.SPECIAL, ['meltdown', 'ejected', 'double kill', 'defeat', 'boiling point', 'neurotic', 'pretender'], 0, false]
-        ],
-
-        1 => [
-            ["Ashes", "maroon", 'maroon', FlxColor.fromRGB(181, 0, 0), RequireType.FROM_STORY_MODE, ['ashes'], 0, false],
-            ["Magmatic", "maroon", 'maroon', FlxColor.fromRGB(181, 0, 0), RequireType.FROM_STORY_MODE, ['magmatic'], 0, false],
-            ["Boiling Point", "boilingpoint", 'bpmar', FlxColor.fromRGB(181, 0, 0), RequireType.FROM_STORY_MODE, ['boiling point'], 0, false]
-        ]
     ];
 }

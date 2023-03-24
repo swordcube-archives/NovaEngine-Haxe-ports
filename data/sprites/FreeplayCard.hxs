@@ -1,28 +1,4 @@
-var spriteOne:FlxSprite;
-var icon:FlxSprite;
-var trueX:Float;
-var trueY:Float;
-var coloring:FlxColor;
-var iconName:String;
-var songText:FlxText;
-var portrait:String;
-var songName:String;
-var targetY:Float = 0;
-var forceX:Float = Math.NEGATIVE_INFINITY;
-var yMult:Float = 100;
-var xAdd:Float = 0;
-var yAdd:Float = 0;
-var deAlpha:Float = 0;
-
-var lock:FlxSprite;
-var priceText:FlxText;
-var price:Int = 0;
-var locked:Bool = true;
-var shuffleLetters:Array<String> = [];
-var bean:FlxSprite;
-var requirementtype:Int;
-
-var shuffleTimer:FlxTimer;
+import backend.Highscore;
 
 var RequireType = {
     FROM_STORY_MODE: 0,
@@ -30,21 +6,37 @@ var RequireType = {
     SPECIAL: 2
 };
 
-function new(song:String, namer:String, colord:FlxColor, portraits:String, ?requirement:Int, ?songs:Array<String>, _price:Int = 0, ?forceUnlock = false) {
-    loadGraphic(Paths.image('impostor/freeplay/songPanel'));
+var requirement:RequireType;
 
-    trueX = x;
-    trueY = y;
-    iconName = namer;
-    coloring = colord;
+var songName:String;
+
+var healthIcon:HealthIcon;
+var songText:FlxText;
+
+var priceText:FlxText;
+var bean:FlxSprite;
+
+var shuffleTimer:FlxTimer;
+
+var shuffleLetters:Array<String> = [];
+var lock:FlxSprite;
+
+var locked:Bool;
+var songs:Array<String> = [];
+
+function new(song:String, icon:String, price:Int, _songs:Array<String>, _requirement:RequireType, _locked:Bool) {
+    loadGraphic(Paths.image('impostor/freeplay/songPanel'));
+    locked = _locked;
+    requirement = _requirement;
+    songs = _songs;
     songName = song;
-    portrait = portraits;
-    requirementtype = requirement;
-    price = _price;
+
+    for(i in 0...song.length)
+        shuffleLetters.push(song.charAt(i));
 
     lock = new FlxSprite(0, 0);
     if(requirement != RequireType.SPECIAL) 
-        lock.frames = Paths.getSparrowAtlas('impostor/freeplay/lock'); 
+        lock.frames = Paths.getSparrowAtlas('impostor/freeplay/lock');
     else 
         lock.frames = Paths.getSparrowAtlas('impostor/freeplay/lockGold');
 
@@ -52,4 +44,176 @@ function new(song:String, namer:String, colord:FlxColor, portraits:String, ?requ
     lock.animation.addByPrefix('unlock', 'lock open', 24, false);
     lock.animation.play('lock');
     lock.updateHitbox();
+
+    priceText = new FlxText(0, 0, 500, Std.string(price), 28);
+    priceText.setFormat(Paths.font("ariblk.ttf"), 28, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+    priceText.updateHitbox();
+    priceText.borderSize = 2;
+
+    bean = new FlxSprite(0, 0).loadGraphic(Paths.image('impostor/freeplay/bean'));
+    bean.scale.set(0.6, 0.6);
+    bean.updateHitbox();
+
+    if(price == 0) {
+        priceText.visible = false;
+        bean.visible = false;
+    }
+
+    healthIcon = new HealthIcon(0, 0, icon);
+    healthIcon.tracked = this;
+    healthIcon.trackingMode = 1;
+    healthIcon.trackingOffset.set(
+        10,
+        12
+    );
+    healthIcon.scale.set(0.55, 0.55);
+    healthIcon.updateHitbox();
+
+    songText = new FlxText(healthIcon.width + 20, 5, 0, song, 24);
+    songText.setFormat(Paths.font("AmaticSC-Bold.ttf"), 64, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+    songText.borderSize = 1.25;
+
+    findLocked(requirement, songs, locked);
+
+    if(locked) {
+        color = 0xFF4A4A4A;
+        healthIcon.color = FlxColor.BLACK;
+        doShuffle();
+        shuffleTimer = new FlxTimer().start(FlxG.random.float(0.1, 0.2), (tmr:FlxTimer) -> {
+            doShuffle();
+        }, 0);
+    }
+}
+
+function doShuffle() {
+    randomShuffle(shuffleLetters);
+    var theText:String = '';
+    for(letter in shuffleLetters){
+        if(FlxG.random.bool(50)){
+            letter = letter.toUpperCase();
+        }else{
+            letter = letter.toLowerCase();
+        }
+        theText += letter;
+    }
+    songText.text = theText;
+}
+
+var shaderNumTween1:FlxTween;
+var shaderNumTween2:FlxTween;
+
+function unlockAnim() {
+    var colorShader = new CustomShader("shaders/ColorShader");
+    colorShader.data.amount.value = [0];
+
+    shader = colorShader;
+    lock.shader = colorShader;
+    priceText.shader = colorShader;
+    bean.shader = colorShader;
+    healthIcon.shader = colorShader;
+    songText.shader = colorShader;
+
+    locked = false;
+
+    FlxG.sound.play(Paths.sound('unlockSong'), 0.9);
+
+    if(shaderNumTween1 != null) shaderNumTween1.cancel();
+    if(shaderNumTween2 != null) shaderNumTween1.cancel();
+
+    new FlxTimer().start(0.1, (tmr:FlxTimer) -> {
+        lock.animation.play('unlock');
+		shaderNumTween1 = FlxTween.num(colorShader.data.amount.value[0], 1, 1.2, {ease: FlxEase.expoIn}, function(v:Float) {
+			colorShader.data.amount.value[0] = v;
+		});
+        new FlxTimer().start(1.3, (tmr:FlxTimer) -> {
+			shaderNumTween2 = FlxTween.num(colorShader.data.amount.value[0], 0, 1.2, {ease: FlxEase.expoOut}, function(v:Float) {
+				colorShader.data.amount.value[0] = v;
+			});
+            lock.visible = false;
+            priceText.visible = false;
+            bean.visible = false;
+            color = 0xFFFFFFFF;
+            healthIcon.color = 0xFFFFFFFF;
+            shuffleTimer.cancel();
+            songText.text = songName;
+
+            new FlxTimer().start(1.5, (tmr:FlxTimer) -> {
+                shader = null;
+                lock.shader = null;
+                priceText.shader = null;
+                bean.shader = null;
+                healthIcon.shader = null;
+                songText.shader = null;
+            });
+        });
+    });
+}
+
+function findLocked(requirement:RequireType, songs:Array<String>, ?forceUnlock:Bool){
+    locked = false;
+    if(forceUnlock){
+        lock.visible = false;
+        bean.visible = false;
+        priceText.visible = false;
+        return;
+    }
+
+    switch(requirement) {
+        case RequireType.FROM_STORY_MODE, RequireType.SPECIAL:
+            for(song in songs){
+                if(Highscore.getScore(song, "hard") == 0)
+                    locked = true;
+            }
+        case RequireType.BEANS:
+            locked = true;
+    }
+
+    if(locked)
+        lock.visible = true;
+    else {
+        lock.visible = false;
+        bean.visible = false;
+        priceText.visible = false;
+    }
+}
+
+function randomShuffle(array:Array<Dynamic>) {
+    var maxValidIndex = array.length - 1;
+    for (i in 0...maxValidIndex) {
+        var j = FlxG.random.int(i, maxValidIndex);
+        var tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
+    }
+}
+
+function onUpdate(elapsed) {
+    lock.setPosition(x + 25, y + 11);
+    songText.setPosition(x + (healthIcon.width + 20), y + 5);
+    bean.setPosition(x + 405, y - 20);
+    priceText.setPosition(x + 440, y - 20);
+
+    for(o in [healthIcon, songText, lock, priceText, bean])
+        o.update(elapsed);
+}
+
+function onDrawPost() {
+    for(o in [healthIcon, songText, lock, priceText, bean]) {
+        if(o.y >= FlxG.height || !o.visible) continue;
+        o.alpha = alpha;
+        o.draw();
+    }
+}
+
+function onDestroy() {
+    for(o in [healthIcon, songText, lock, priceText, bean])
+        o.destroy();
+
+    for(o in [shaderNumTween1, shaderNumTween2]) {
+        if(o == null) continue;
+        o.cancel();
+        o.destroy();
+    }
+
+    shaderNumTween1 = shaderNumTween2 = null;
 }
