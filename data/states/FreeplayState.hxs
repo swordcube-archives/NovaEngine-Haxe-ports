@@ -3,6 +3,7 @@ import backend.utilities.MathUtil;
 import flixel.FlxCamera;
 import music.Song;
 import backend.Highscore;
+import backend.modding.ModUtil;
 
 // THIS IS FOR DEBUGGING ONLY IF YOU CHEAT WITH THIS
 // UHHH
@@ -13,7 +14,7 @@ import backend.Highscore;
 
 
 // FUCK YOU LOL!
-var enableDebugging:Bool = false; // ENABLE TO BASICALLY CHEAT!!!
+var enableDebugging:Bool = true; // ENABLE TO BASICALLY CHEAT!!!
 
 var songs:Map<Int, Array<Dynamic>> = [];
 var totalPages:Int = 0;
@@ -223,9 +224,9 @@ function changeSelection(?change:Int) {
 
     rimlight.data.rimlightColor.value = [red / 255, green / 255, blue / 255, 1];
 
-    intendedScore = Highscore.getScore(songs[curPage][curSelected][0].toLowerCase(), "hard");
+    intendedScore = Highscore.getScore(songs[curPage][curSelected][0].toLowerCase()+":"+ModUtil.currentMod, "hard");
 
-    CoolUtil.playMenuSFX(0);
+    FlxG.sound.play(Paths.sound("hover"), 0.5);
 }
 
 function changePortrait() {
@@ -273,6 +274,7 @@ function onUpdate(elapsed) {
     starsFG.x -= elapsed * 9;
 
     if(FlxG.mouse.overlaps(crossImage) && FlxG.mouse.justPressed) {
+        FlxG.sound.play(Paths.sound("select"), 0.5);
         goBack();
         return;
     }
@@ -296,7 +298,7 @@ function onUpdate(elapsed) {
             // unlocks every story mode & special song
             for(list in songs) {
                 for(song in list)
-                    Highscore.setScore(song[0].toLowerCase(), "hard", 999999);
+                    Highscore.setScore(song[0].toLowerCase()+":"+ModUtil.currentMod, "hard", 1);
             }
             changePage(0);
             changePortrait();
@@ -306,7 +308,7 @@ function onUpdate(elapsed) {
             // locks every story mode & special song
             for(list in songs) {
                 for(song in list)
-                    Highscore.setScore(song[0].toLowerCase(), "hard", 0);
+                    Highscore.setScore(song[0].toLowerCase()+":"+ModUtil.currentMod, "hard", 0);
             }
             changePage(0);
             changePortrait();
@@ -315,8 +317,10 @@ function onUpdate(elapsed) {
         if(FlxG.keys.justPressed.O) {
             // unlocks every song that requires beans
             for(page in songs.keys()) {
-                for(i in 0...songs[page].length)
+                for(i in 0...songs[page].length) {
+                    // if(localWeeks[page][i][6] <= 0) continue;
                     localWeeks[page][i][7] = true;
+                }
             }
             changePage(0);
             changePortrait();
@@ -325,8 +329,10 @@ function onUpdate(elapsed) {
         if(FlxG.keys.justPressed.P) {
             // locks every song that requires beans
             for(page in songs.keys()) {
-                for(i in 0...songs[page].length)
+                for(i in 0...songs[page].length) {
+                    // if(localWeeks[page][i][6] <= 0) continue;
                     localWeeks[page][i][7] = false;
+                }
             }
             changePage(0);
             changePortrait();
@@ -337,8 +343,14 @@ function onUpdate(elapsed) {
         if(controls.UI_UP_P || FlxG.mouse.wheel > 0) changeSelection(-1);
         if(controls.UI_DOWN_P || FlxG.mouse.wheel < 0) changeSelection(1);
 
-        if(controls.UI_LEFT_P) changePage(-1);
-        if(controls.UI_RIGHT_P) changePage(1);
+        if(controls.UI_LEFT_P) {
+            FlxG.sound.play(Paths.sound("panelAppear"), 0.5);
+            changePage(-1);
+        }
+        if(controls.UI_RIGHT_P) {
+            FlxG.sound.play(Paths.sound("panelDisappear"), 0.5);
+            changePage(1);
+        }
 
         if(controls.ACCEPT) {
             var pulseColor:FlxColor = null;

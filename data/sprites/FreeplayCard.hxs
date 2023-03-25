@@ -1,4 +1,5 @@
 import backend.Highscore;
+import backend.modding.ModUtil;
 
 var RequireType = {
     FROM_STORY_MODE: 0,
@@ -21,7 +22,7 @@ var shuffleTimer:FlxTimer;
 var shuffleLetters:Array<String> = [];
 var lock:FlxSprite;
 
-var locked:Bool;
+var locked:Bool = false;
 var songs:Array<String> = [];
 
 function new(song:String, icon:String, price:Int, _songs:Array<String>, _requirement:RequireType, _locked:Bool) {
@@ -161,7 +162,7 @@ function findLocked(requirement:RequireType, songs:Array<String>, ?forceUnlock:B
     switch(requirement) {
         case RequireType.FROM_STORY_MODE, RequireType.SPECIAL:
             for(song in songs){
-                if(Highscore.getScore(song, "hard") == 0)
+                if(Highscore.getScore(song+":"+ModUtil.currentMod, "hard") == 0)
                     locked = true;
             }
         case RequireType.BEANS:
@@ -193,13 +194,17 @@ function onUpdate(elapsed) {
     bean.setPosition(x + 405, y - 20);
     priceText.setPosition(x + 440, y - 20);
 
-    for(o in [healthIcon, songText, lock, priceText, bean])
-        o.update(elapsed);
+    visible = !(y < stopYTop || y >= stopYBottom);
+
+    healthIcon.update(elapsed);
 }
+
+var stopYTop:Float = 30;
+var stopYBottom:Float = FlxG.height;
 
 function onDrawPost() {
     for(o in [healthIcon, songText, lock, priceText, bean]) {
-        if(o.y >= FlxG.height || !o.visible) continue;
+        if(o.y < stopYTop || o.y >= stopYBottom || !o.visible) continue;
         o.alpha = alpha;
         o.draw();
     }

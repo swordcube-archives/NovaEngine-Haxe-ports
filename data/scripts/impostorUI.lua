@@ -64,6 +64,12 @@ function onSongStart()
     FlxTween:tween(timeTxt, {alpha = 1}, 0.5, {ease = FlxEase.circOut})
 end
 
+function onStartEndCutscene(event)
+    parent:remove(timeBarBG, true)
+    parent:remove(timeBar, true)
+    parent:remove(timeTxt, true)
+end
+
 function onUpdatePost(elapsed)
     updateScoreText()
 end

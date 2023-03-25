@@ -1,22 +1,39 @@
--- uncomment to unlock this debug functionality
+return -- comment to unlock this debug functionality
 
--- function onUpdatePost()
---     if FlxG.keys.justPressed.F1 then
---         Conductor.songPosition = Conductor.songPosition + 5000
+function onUpdatePost()
+    if FlxG.keys.justPressed.F1 then
+        Conductor.songPosition = Conductor.songPosition + 5000
+        updateConductorShit()
+        return
+    end
+
+    if FlxG.keys.justPressed.F2 then
+        for i = 0, parent.notes.length - 1 do
+            parent.notes.members[i]:kill()
+            parent.notes.members[i]:destroy()
+            parent.songScore = parent.songScore + 350
+        end
+        parent.notes:clear()
         
---         FlxG.sound.music:pause()
---         parent.vocals:pause()
+        Conductor.songPosition = FlxG.sound.music.length - 1000
+        updateConductorShit()
+        return
+    end
+end
 
---         FlxG.sound.music.time = Conductor.songPosition
---         parent.vocals.time = Conductor.songPosition
+function updateConductorShit()
+    FlxG.sound.music:pause()
+    parent.vocals:pause()
 
---         FlxG.sound.music:play()
---         parent.vocals:play()
+    FlxG.sound.music.time = Conductor.songPosition
+    parent.vocals.time = Conductor.songPosition
 
---         Conductor:update()        
---     end
--- end
+    FlxG.sound.music:play()
+    parent.vocals:play()
 
--- function onPlayerMiss(event)
---     parent.health = 2
--- end
+    Conductor:update()     
+end
+
+function onPlayerMiss(event)
+    parent.health = 2
+end
