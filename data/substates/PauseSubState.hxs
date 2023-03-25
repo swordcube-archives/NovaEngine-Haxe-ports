@@ -1,0 +1,3 @@
+function onUpdatePost(elapsed) {
+    grpAlphabet.forEach((item) -> item.screenCenter(FlxAxes.X));
+}
