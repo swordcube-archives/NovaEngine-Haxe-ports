@@ -224,7 +224,7 @@ function changeSelection(?change:Int) {
 
     rimlight.data.rimlightColor.value = [red / 255, green / 255, blue / 255, 1];
 
-    intendedScore = Highscore.getScore(songs[curPage][curSelected][0].toLowerCase()+":"+ModUtil.currentMod, "hard");
+    intendedScore = Highscore.getScore(songs[curPage][curSelected][0]+":"+ModUtil.currentMod, "hard");
 
     FlxG.sound.play(Paths.sound("hover"), 0.5);
 }
@@ -298,7 +298,7 @@ function onUpdate(elapsed) {
             // unlocks every story mode & special song
             for(list in songs) {
                 for(song in list)
-                    Highscore.setScore(song[0].toLowerCase()+":"+ModUtil.currentMod, "hard", 1);
+                    Highscore.setScore(song[0]+":"+ModUtil.currentMod, "hard", 1);
             }
             changePage(0);
             changePortrait();
@@ -308,7 +308,7 @@ function onUpdate(elapsed) {
             // locks every story mode & special song
             for(list in songs) {
                 for(song in list)
-                    Highscore.setScore(song[0].toLowerCase()+":"+ModUtil.currentMod, "hard", 0);
+                    Highscore.setScore(song[0]+":"+ModUtil.currentMod, "hard", 0);
             }
             changePage(0);
             changePortrait();
