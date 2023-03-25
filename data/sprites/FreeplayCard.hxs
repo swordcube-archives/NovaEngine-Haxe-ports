@@ -194,7 +194,16 @@ function onUpdate(elapsed) {
     bean.setPosition(x + 405, y - 20);
     priceText.setPosition(x + 440, y - 20);
 
-    visible = !(y < stopYTop || y >= stopYBottom);
+    // this is a bullshit way of doing this
+    // but other people had this break before
+    // this change so uh fuck.
+    visible = true;
+    
+    if(y < stopYTop)
+        visible = false;
+    
+    if(y > stopYBottom)
+        visible = false;
 
     healthIcon.update(elapsed);
 }
@@ -204,7 +213,7 @@ var stopYBottom:Float = FlxG.height;
 
 function onDrawPost() {
     for(o in [healthIcon, songText, lock, priceText, bean]) {
-        if(o.y < stopYTop || o.y >= stopYBottom || !o.visible) continue;
+        if(!visible || !o.visible) continue;
         o.alpha = alpha;
         o.draw();
     }
