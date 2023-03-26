@@ -154,7 +154,7 @@ function onUpdate(elapsed) {
                 spr.animation.play('hover');
             }
                 
-            if(FlxG.mouse.pressed && canClick) {
+            if(FlxG.mouse.justPressed && canClick) {
                 switch (optionShit[curSelected]) {
                     case 'Gallery':
                         FlxG.openURL('https://vsimpostor.com/');
