@@ -12,7 +12,7 @@ function onUpdate(elapsed)
     flashSprite.alpha = FlxMath:lerp(flashSprite.alpha, 0, FlxMath:bound(elapsed * 9, 0, 1))
 end
 
-function onEvent(time, value1, value2)
+function onEvent(name, value1, value2)
     local charType = Std:parseFloat(value1)
     if Math:isNaN(charType) then
         charType = 0.4

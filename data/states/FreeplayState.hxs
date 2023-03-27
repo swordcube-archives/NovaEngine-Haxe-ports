@@ -72,6 +72,18 @@ function onCreate() {
         localWeeks = songs;
     }
 
+    // shitty fix for a dumb issue that is fps dependant
+    if(FlxG.updateFramerate > 240) {
+        var framerate:Int = 240;
+        if(framerate > FlxG.drawFramerate) {
+			FlxG.updateFramerate = framerate;
+			FlxG.drawFramerate = framerate;
+		} else {
+			FlxG.drawFramerate = framerate;
+			FlxG.updateFramerate = framerate;
+		}
+    }
+
     camUpper = new FlxCamera();
     camUpper.bgColor = 0x0;
     FlxG.cameras.add(camUpper, false);
@@ -273,6 +285,12 @@ function onUpdate(elapsed) {
     starsBG.x -= elapsed * 9 * 0.5;
     starsFG.x -= elapsed * 9;
 
+    if(controls.SWITCH_MOD) {
+        persistentUpdate = false;
+        persistentDraw = true;
+        openSubState(new states.menus.ModSwitcher());
+    }
+
     if(FlxG.mouse.overlaps(crossImage) && FlxG.mouse.justPressed) {
         FlxG.sound.play(Paths.sound("select"), 0.5);
         goBack();
@@ -395,6 +413,8 @@ function onUpdate(elapsed) {
                 PlayState.isStoryMode = false;
                 PlayState.campaignScore = 0;
                 PlayState.storyDifficulty = "hard";
+
+                Main.setFPSCap(SettingsAPI.fpsCap);
                 FlxG.switchState(new PlayState());
             }
         }
@@ -409,6 +429,7 @@ function goBack() {
     SettingsAPI.flush();
     
     CoolUtil.playMenuSFX(2);
+    Main.setFPSCap(SettingsAPI.fpsCap);
     FlxG.switchState(new states.menus.MainMenuState());
 }
 

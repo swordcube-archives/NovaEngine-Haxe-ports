@@ -1,0 +1,79 @@
+var toogusorange:FlxSprite;
+var toogusblue:FlxSprite;
+var tooguswhite:FlxSprite;
+
+function onCreate() {
+    stage.dadPos.set(1100, 750);
+    stage.gfPos.set(1400, 775);
+    stage.bfPos.set(1950, 750);
+
+    defaultCamZoom = 0.7;
+
+    var bg0:FlxSprite = new FlxSprite(0, 0).loadGraphic(stageImage('wallbgthing'));
+    bg0.updateHitbox();
+    bg0.antialiasing = true;
+    bg0.scrollFactor.set(1, 1);
+    bg0.active = false;
+    add(bg0);
+
+    var bg:FlxSprite = new FlxSprite(0, 0).loadGraphic(stageImage('floornew'));
+    bg.updateHitbox();
+    bg.antialiasing = true;
+    bg.scrollFactor.set(1, 1);
+    bg.active = false;
+    add(bg);
+
+    toogusorange = new FlxSprite(875, 915);
+    toogusorange.frames = stageSparrow('yellowcoti');
+    toogusorange.animation.addByPrefix('bop', 'Pillars with crewmates instance 1', 24, false);
+    toogusorange.animation.play('bop');
+    toogusorange.active = true;
+    add(toogusorange);
+
+    var bg2:FlxSprite = new FlxSprite(0, 0).loadGraphic(stageImage('backbars'));
+    bg2.updateHitbox();
+    bg2.antialiasing = true;
+    bg2.active = false;
+    add(bg2);
+
+    toogusblue = new FlxSprite(450, 995);
+    toogusblue.frames = stageSparrow('browngeoff');
+    toogusblue.animation.addByPrefix('bop', 'Pillars with crewmates instance 1', 24, false);
+    toogusblue.animation.play('bop');
+    toogusblue.active = true;
+    add(toogusblue);
+
+    var bg3:FlxSprite = new FlxSprite(0, 0).loadGraphic(stageImage('frontpillars'));
+    bg3.active = false;
+    add(bg3);
+
+    tooguswhite = new FlxSprite(1200, 100);
+    tooguswhite.frames = stageSparrow('ball lol');
+    tooguswhite.animation.addByPrefix('bop', 'core instance 1', 24, false);
+    tooguswhite.animation.play('bop');
+    tooguswhite.active = true;
+    add(tooguswhite);
+
+    // shit in front
+    var lightoverlay:FlxSprite = new FlxSprite(0, 0).loadGraphic(stageImage('frontblack'));
+    lightoverlay.active = false;
+    add(lightoverlay);
+
+    var mainoverlay:FlxSprite = new FlxSprite(750, 100).loadGraphic(stageImage('yeahman'));
+    mainoverlay.animation.addByPrefix('bop', 'Reactor Overlay Top instance 1', 24, true);
+    mainoverlay.animation.play('bop');
+    mainoverlay.active = false;
+    add(mainoverlay);
+}
+
+function onCountdownTick(e) {bopShit(e.swagCounter);}
+function onBeatHit(b) {bopShit(b);}
+
+function bopShit(curBeat) {
+    if (curBeat % 2 == 0) {
+        toogusorange.animation.play('bop', true);
+        toogusblue.animation.play('bop', true);
+    }
+    if (curBeat % 4 == 0)
+        tooguswhite.animation.play('bop', true);
+}
