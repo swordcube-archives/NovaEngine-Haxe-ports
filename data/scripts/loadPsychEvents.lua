@@ -52,7 +52,6 @@ function onCreate()
 
             local script = ScriptHandler:loadModule(Paths:script("data/events/"..event[2]))
             parent.eventScripts:set(event[2], script)
-            parent.scripts:add(script)
 
             -- this is dumb but whatever it works
             FlxTimer:new():start(0.01, function(timer)
