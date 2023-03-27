@@ -1,3 +1,7 @@
+var speaker:FlxSprite;
+var snow:FlxSprite;
+var crowd2:FlxSprite;
+
 function onCreate() {
     stage.dadPos.set(0, -150);
     stage.gfPos.set(300, -120);
@@ -6,36 +10,27 @@ function onCreate() {
     defaultCamZoom = 0.75;
 
     var sky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(stageImage('polus_custom_sky'));
-    sky.antialiasing = SettingsAPI.antialiasing;
     sky.scrollFactor.set(0.5, 0.5);
     sky.setGraphicSize(Std.int(sky.width * 1.4));
     sky.active = false;
     add(sky);
 
     var rocks:FlxSprite = new FlxSprite(-700, -300).loadGraphic(stageImage('polusrocks'));
-    rocks.updateHitbox();
-    rocks.antialiasing = SettingsAPI.antialiasing;
     rocks.scrollFactor.set(0.6, 0.6);
     rocks.active = false;
     add(rocks);
 
     var hills:FlxSprite = new FlxSprite(-1050, -180.55).loadGraphic(stageImage('polusHills'));
-    hills.updateHitbox();
-    hills.antialiasing = SettingsAPI.antialiasing;
     hills.scrollFactor.set(0.9, 0.9);
     hills.active = false;
     add(hills);
 
     var warehouse:FlxSprite = new FlxSprite(50, -400).loadGraphic(stageImage('polus_custom_lab'));
-    warehouse.updateHitbox();
-    warehouse.antialiasing = SettingsAPI.antialiasing;
     warehouse.scrollFactor.set(1, 1);
     warehouse.active = false;
     add(warehouse);
 
     var ground:FlxSprite = new FlxSprite(-1350, 80).loadGraphic(stageImage('polus_custom_floor'));
-    ground.updateHitbox();
-    ground.antialiasing = SettingsAPI.antialiasing;
     ground.scrollFactor.set(1, 1);
     ground.active = false;
     add(ground);
@@ -44,25 +39,47 @@ function onCreate() {
     speaker.frames = Paths.getSparrowAtlas('game/stages/polus/speakerlonely');
     speaker.animation.addByPrefix('bop', 'speakers lonely', 24, false);
     speaker.animation.play('bop');
-    speaker.setGraphicSize(Std.int(speaker.width * 1));
-    speaker.antialiasing = false;
     speaker.scrollFactor.set(1, 1);
-    speaker.active = true;
-    speaker.antialiasing = SettingsAPI.antialiasing;
+
     if (PlayState.SONG.name.toLowerCase() == 'sabotage')
-    {
         add(speaker);
-    }
-    if (PlayState.SONG.name.toLowerCase() == 'meltdown')
-    {
+    
+    if (PlayState.SONG.name.toLowerCase() == 'meltdown') {
         GameOverSubstate.characterName = 'bfg-dead';
         var bfdead:FlxSprite = new FlxSprite(600, 525).loadGraphic(stageImage('bfdead'));
         bfdead.setGraphicSize(Std.int(bfdead.width * 0.8));
         bfdead.updateHitbox();
-        bfdead.antialiasing = SettingsAPI.antialiasing;
         bfdead.scrollFactor.set(1, 1);
         bfdead.active = false;
         add(speaker);
         add(bfdead);
     }
+    
+    // front character people
+    snow = new FlxSprite(0, -250);
+    snow.frames = stageSparrow('snow');
+    snow.animation.addByPrefix('cum', 'cum', 24);
+    snow.animation.play('cum');
+    snow.setGraphicSize(Std.int(snow.width * 2));
+    add(snow, 3);
+
+    if (PlayState.SONG.name.toLowerCase() == 'meltdown') {
+        crowd2 = new FlxSprite(-900, 150);
+        crowd2.frames = stageSparrow("boppers_meltdown");
+        crowd2.animation.addByPrefix('bop', 'BoppersMeltdown', 24, false);
+        crowd2.animation.play('bop');
+        crowd2.scrollFactor.set(1.5, 1.5);
+        add(crowd2, 3);
+    }
+}
+
+function onCountdownTick(b) {bopShit(b);}
+function onBeatHit(b) {bopShit(b);}
+
+function bopShit(curBeat) {
+    if(crowd2 != null && curBeat % 2 == 0)
+        crowd2.animation.play('bop');
+
+    if(speaker != null)
+        speaker.animation.play('bop');
 }

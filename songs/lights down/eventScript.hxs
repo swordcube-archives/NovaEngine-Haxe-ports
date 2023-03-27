@@ -1,0 +1,114 @@
+var bubblyBitch:FlxSprite;
+var greenFuck:Character;
+var boyFuck:Character;
+
+var ldSpeaker:FlxSprite;
+var bfvent:FlxSprite;
+
+var bubblyTween1:FlxTween;
+var bubblyTween2:FlxTween;
+var bubblyTween3:FlxTween;
+
+var charShader:CustomShader;
+
+function onCreatePost() {
+    ldSpeaker = stage.getSprite("ldSpeaker");
+    bfvent = stage.getSprite("bfvent");
+
+    bubblyBitch = new FlxSprite(-300, -150).makeGraphic(FlxG.width * 2, FlxG.height * 2, 0xFF000000);
+    greenFuck = new Character(dad.x, dad.y, "blackpostor");
+
+    boyFuck = new Character(boyfriend.x, boyfriend.y, "whitebf", true);
+
+    for (i in [bubblyBitch, greenFuck, boyFuck]) {
+        i.alpha = 0.001;
+        add(i);
+    }
+
+    charShader = new CustomShader("shaders/BWShader");
+    charShader.hset("lowerBound", 0.01);
+    charShader.hset("upperBound", 0.12);
+    charShader.hset("invert", true);
+}
+
+var lightsOut:Bool = false;
+
+function onEvent(name) {
+    switch(name.toLowerCase()) {
+        case "lights out":
+            lightsOut = true;
+
+            FlxG.camera.flash(0xFFFFFFFF, 0.5);
+            bubblyBitch.alpha = 1;
+
+            if(bubblyTween1 != null) bubblyTween1.cancel();
+            if(bubblyTween2 != null) bubblyTween2.cancel();
+
+            bubblyTween1 = FlxTween.tween(greenFuck, {alpha: 1}, 0.5, {ease: FlxEase.cubeOut});
+            bubblyTween2 = FlxTween.tween(boyFuck, {alpha: 1}, 0.5, {ease: FlxEase.cubeOut});
+
+            for(i in [iconP2, iconP1])
+                i.shader = charShader;
+
+            healthBar.createFilledBar(FlxColor.BLACK, FlxColor.WHITE);
+            healthBar.updateBar();
+
+            scoreTxt.color = 0xFFFFFFFF;
+
+        case "lights on":
+            lightsOut = false;
+
+            FlxG.camera.flash(0xFF000000, 0.5);
+            bubblyBitch.alpha = 1;
+
+            if(bubblyTween1 != null) bubblyTween1.cancel();
+            if(bubblyTween2 != null) bubblyTween2.cancel();
+            if(bubblyTween3 != null) bubblyTween3.cancel();
+
+            bubblyTween1 = FlxTween.tween(bubblyBitch, {alpha: 0.001}, 0.5, {ease: FlxEase.cubeOut});
+            bubblyTween2 = FlxTween.tween(greenFuck, {alpha: 0.001}, 0.5, {ease: FlxEase.cubeOut});
+            bubblyTween3 = FlxTween.tween(boyFuck, {alpha: 0.001}, 0.5, {ease: FlxEase.cubeOut});
+
+            for(i in [iconP2, iconP1])
+                i.shader = null;
+
+            healthBar.createFilledBar(dad.healthBarColor, boyfriend.healthBarColor);
+            healthBar.updateBar();
+
+            scoreTxt.color = dad.healthBarColor;
+    }
+}
+
+function onStepHit(curStep) {
+    switch(curStep) {
+        case 1600:
+            for (i in [bubblyBitch, greenFuck, boyFuck, camHUD, boyfriend, gf])
+                i.visible = false;
+        
+            ldSpeaker.animation.play("boom", true);
+            bfvent.animation.play("vent", true);
+
+            for (i in [ldSpeaker, bfvent])
+                i.alpha = 1;
+
+            dad.playAnim("liveReaction", true);
+            dad.danceOnBeat = false;
+            dad.idleAfterSinging = false;
+
+        case 1632: 
+            camGame.visible = false;
+    }
+}
+
+var anims = ["singLEFT", "singDOWN", "singUP", "singRIGHT"];
+
+function onCPUHit(event:NoteHitEvent) {
+    if(event.note.strumTime >= 141176)
+        event.cancelSingAnim = true;
+    else
+        greenFuck.playAnim(anims[event.note.noteData], true);
+}
+
+function onPlayerHit(event:NoteHitEvent) {
+    boyFuck.playAnim(anims[event.note.noteData], true);
+}

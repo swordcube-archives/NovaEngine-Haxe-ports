@@ -33,7 +33,7 @@ function onCreate() {
         add(walker3);
     }
 
-    if (PlayState.SONG.name.toLowerCase() == 'lights-down') {
+    if (PlayState.SONG.name.toLowerCase() == 'lights down') {
         bfvent = new FlxSprite(70, 200);
         bfvent.frames = stageSparrow('bf_mira_vent');
         bfvent.animation.addByPrefix('vent', 'bf vent', 24, false);
@@ -41,7 +41,7 @@ function onCreate() {
         bfvent.scrollFactor.set(1, 1);
         bfvent.active = true;
         bfvent.alpha = 0.001;
-        add(bfvent);
+        addGlobally("bfvent", bfvent);
     }
 
     var tbl:FlxSprite = new FlxSprite(-1600, 50).loadGraphic(stageImage('table_bg'));
@@ -50,13 +50,13 @@ function onCreate() {
     tbl.active = false;
     add(tbl);
 
-    if (PlayState.SONG.name.toLowerCase() == 'lights-down') {
+    if (PlayState.SONG.name.toLowerCase() == 'lights down') {
         ldSpeaker = new FlxSprite(400, 420);
         ldSpeaker.frames = stageSparrow('stereo_taken');
         ldSpeaker.animation.addByPrefix('boom', 'stereo boom', 24, false);
         ldSpeaker.scrollFactor.set(1, 1);
         ldSpeaker.active = true;
-        ldSpeaker.visible = false;
-        add(ldSpeaker);
+        ldSpeaker.alpha = 0.001;
+        addGlobally("ldSpeaker", ldSpeaker);
     }
 }

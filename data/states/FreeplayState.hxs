@@ -14,7 +14,7 @@ import backend.modding.ModUtil;
 
 
 // FUCK YOU LOL!
-var enableDebugging:Bool = true; // ENABLE TO BASICALLY CHEAT!!!
+var enableDebugging:Bool = false; // ENABLE TO BASICALLY CHEAT!!!
 
 var songs:Map<Int, Array<Dynamic>> = [];
 var totalPages:Int = 0;
@@ -283,7 +283,7 @@ function onUpdate(elapsed) {
     grpSongs.forEach((song:FreeplayCard) -> {
         song.x = MathUtil.lerp(song.x, 70 - Math.abs((i - curSelected) * 65), 0.15);
         song.y = MathUtil.lerp(song.y, ((FlxG.height - song.height) * 0.5) + (((song.height + 20) * (i - curSelected)) + 15), 0.15);
-        song.alpha = MathUtil.lerp(song.alpha, 1 / (Math.abs(i - curSelected) * 1.5), 0.15);
+        song.alpha = MathUtil.lerp(song.alpha, FlxMath.bound(1 / (Math.abs(i - curSelected) * 1.5), 0, 1), 0.15);
 
         i++;
     });

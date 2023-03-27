@@ -220,7 +220,7 @@ function onDrawPost() {
 }
 
 function onDestroy() {
-    for(o in [healthIcon, songText, lock, priceText, bean])
+    for(o in [healthIcon, songText, lock, priceText, bean, shuffleTimer])
         o.destroy();
 
     for(o in [shaderNumTween1, shaderNumTween2]) {
