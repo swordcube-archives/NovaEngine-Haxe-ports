@@ -20,15 +20,11 @@ var curSelected:Int = 0;
 function onCreate() {
     runDefaultCode = false;
 
-    starFG = new FlxBackdrop(Paths.image('impostor/menuShit/starFG'), 1, 1, true, true);
-    starFG.updateHitbox();
+    add(starFG = new FlxBackdrop(Paths.image('impostor/menuShit/starFG'), FlxAxes.XY, 0, 0));
     starFG.scrollFactor.set();
-    add(starFG);
 
-    starBG = new FlxBackdrop(Paths.image('impostor/menuShit/starBG'), 1, 1, true, true);
-    starBG.updateHitbox();
+    add(starBG = new FlxBackdrop(Paths.image('impostor/menuShit/starBG'), FlxAxes.XY, 0, 0));
     starBG.scrollFactor.set();
-    add(starBG);
 
     redImpostor = new FlxSprite(350, -160);
     redImpostor.frames = Paths.getSparrowAtlas('impostor/menuShit/redMenu');

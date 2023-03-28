@@ -88,12 +88,12 @@ function onCreate() {
     camUpper.bgColor = 0x0;
     FlxG.cameras.add(camUpper, false);
 
-    add(starsBG = new FlxBackdrop(Paths.image('impostor/freeplay/starBG'), 1, 1, true, true));
+    add(starsBG = new FlxBackdrop(Paths.image('impostor/freeplay/starBG'), FlxAxes.XY, 0, 0));
     starsBG.setPosition(111.3, 67.95);
     starsBG.updateHitbox();
     starsBG.scrollFactor.set();
 
-    add(starsFG = new FlxBackdrop(Paths.image('impostor/freeplay/starFG'), 1, 1, true, true));
+    add(starsFG = new FlxBackdrop(Paths.image('impostor/freeplay/starFG'), FlxAxes.XY, 0, 0));
     starsFG.setPosition(54.3, 59.45);
     starsFG.updateHitbox();
     starsFG.scrollFactor.set();

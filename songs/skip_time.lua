@@ -9,9 +9,11 @@ function onUpdatePost()
 
     if FlxG.keys.justPressed.F2 then
         for i = 0, parent.notes.length - 1 do
+            if not parent.notes.members[i].isSustainNote then
+                parent.songScore = parent.songScore + 350
+            end
             parent.notes.members[i]:kill()
             parent.notes.members[i]:destroy()
-            parent.songScore = parent.songScore + 350
         end
         parent.notes:clear()
         
