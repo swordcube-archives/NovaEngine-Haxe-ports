@@ -51,13 +51,9 @@ function onCreate()
             if parent.eventScripts:exists(event[2]) then goto continue2 end
 
             local script = ScriptHandler:loadModule(Paths:script("data/events/"..event[2]))
+            script:setParent(PlayState.current)
+            script:load()
             parent.eventScripts:set(event[2], script)
-
-            -- this is dumb but whatever it works
-            FlxTimer:new():start(0.01, function(timer)
-                script:load()
-                script:call("onCreate", {})
-            end)
 
             ::continue2::
         end

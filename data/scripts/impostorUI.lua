@@ -64,6 +64,12 @@ function onSongStart()
     FlxTween:tween(timeTxt, {alpha = 1}, 0.5, {ease = FlxEase.circOut})
 end
 
+function onEvent(name, parameters)
+    if name == "Change Character" then
+        parent.scoreTxt.color = parent.dad.healthBarColor
+    end
+end
+
 function onStartEndCutscene(event)
     parent:remove(timeBarBG, true)
     parent:remove(timeBar, true)

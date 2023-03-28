@@ -1,4 +1,4 @@
-function onEvent(time, intensity, interval)
-    parent.camBumpingMult = intensity
-    parent.camBumpingInterval = interval
+function onEvent(time, parameters)
+    parent.camBumpingMult = parameters[0]
+    parent.camBumpingInterval = parameters[1]
 end

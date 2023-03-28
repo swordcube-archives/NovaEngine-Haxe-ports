@@ -50,6 +50,21 @@ function onPlayerHit(event)
     lastNote.bf.data = event.note.noteData
 end
 
+function onEvent(name, parameters)
+    if name == "Change Character" then
+        if parameters[0] == 2 then
+            playerTrail:loadCharacter(parameters[1])
+        else
+            -- if you specify gf then we do nothing
+            -- because there's no gf trail! teehee!
+            if parameters[0] == 1 then
+                return
+            end
+            opponentTrail:loadCharacter(parameters[1])
+        end
+    end
+end
+
 local opponentTrailTween
 local playerTrailTween
 
