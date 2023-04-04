@@ -1,0 +1,3 @@
+function onCreatePost() {
+    bg.color = FlxColor.WHITE;
+}

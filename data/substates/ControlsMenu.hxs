@@ -1,0 +1,11 @@
+function onCreatePost() {
+    bg.color = FlxColor.WHITE;
+}
+
+function onUpdatePost(elapsed) {
+    for(i in 0...controlsArray.length) {
+        var list = controlsArray[i];
+        list[1].forEach((a) -> a.color = FlxColor.WHITE);
+        list[2].forEach((a) -> a.color = FlxColor.WHITE);
+    }
+}

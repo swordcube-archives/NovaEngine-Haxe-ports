@@ -1,0 +1,12 @@
+function onCreatePost() {
+    bg.color = FlxColor.WHITE;
+}
+
+function onUpdatePost(elapsed) {
+    grpOptions.forEach((option) -> {
+        if(option.arrows != null)
+            option.arrows.forEach((a) -> a.color = FlxColor.WHITE);
+        if(option.valueTxt != null)
+            option.valueTxt.forEach((a) -> a.color = FlxColor.WHITE);
+    });
+}

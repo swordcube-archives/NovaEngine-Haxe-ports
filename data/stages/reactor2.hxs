@@ -66,6 +66,13 @@ function onCreate() {
     add(mainoverlay);
 }
 
+function onCreatePost() {
+    if(SettingsAPI.judgementCamera.toLowerCase() == "world") {
+        comboGroup.x = gf.x + 150;
+        comboGroup.y = gf.y + 220;
+    }
+}
+
 function onCountdownTick(e) {bopShit(e.swagCounter);}
 function onBeatHit(b) {bopShit(b);}
 
